@@ -1,8 +1,10 @@
 package es.mdef.vehiculos;
 
 import es.mdef.interfaces.Arrancable;
+import es.mdef.interfaces.Matriculable;
 
-public class Coche extends VehiculoConRuedas implements Arrancable {
+public class Coche extends VehiculoConRuedas implements Arrancable, Matriculable {
+	
 	int numeroDeRuedas;
 	String matricula;
 
@@ -15,26 +17,9 @@ public class Coche extends VehiculoConRuedas implements Arrancable {
 		return numeroDeRuedas;
 	}
 
-//	public Coche() {
-//		numeroDeRuedas = 4;
-//	}
-
-	public Coche(String color) {
-//		this();
-//		setColor(color); // como ya tengo el setter lo utilizo
-		this(color, null);
-	}
-
-	public Coche(String color, String modelo) {
-//		this(color);
-//		this.modelo = modelo;
-		super(color, modelo);
-		numeroDeRuedas = 4;
-	}
-
 	@Override
 	public String toString() {
-		return "Placa " + matricula + " - " + super.toString();
+		return "Placa " + mostrarMatricula() + " - " + super.toString();
 	}
 
 	@Override
@@ -72,6 +57,28 @@ public class Coche extends VehiculoConRuedas implements Arrancable {
 	public boolean arrancar() {
 		System.out.println("Arranco con la llave.");
 		return true;
+	}
+
+	@Override
+	public String getMatricula() {
+		
+		return matricula;
+	}
+//	public Coche() {
+//	numeroDeRuedas = 4;
+//}
+
+	public Coche(String color) {
+	//	this();
+	//	setColor(color); // como ya tengo el setter lo utilizo
+		this(color, null);
+	}
+
+	public Coche(String color, String modelo) {
+	//	this(color);
+	//	this.modelo = modelo;
+		super(color, modelo);
+		numeroDeRuedas = 4;
 	}
 
 }

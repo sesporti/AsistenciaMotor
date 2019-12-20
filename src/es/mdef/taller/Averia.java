@@ -3,9 +3,10 @@ package es.mdef.taller;
 import java.util.Collection;
 import java.util.Date;
 
+import es.mdef.interfaces.Presupuestable;
 import es.mdef.vehiculos.Vehiculo;
 
-public class Averia {
+public class Averia implements Presupuestable {
 	
 	private Identificador id;
 	private String descripcion;
@@ -13,6 +14,7 @@ public class Averia {
 	private Collection<Repuesto> repuestos;
 	private int horas;
 	private Vehiculo vehiculo;
+	
 	/**
 	 * @return the id
 	 */
@@ -88,6 +90,27 @@ public class Averia {
 				+ getFechaIngreso() + ", getRepuestos()=" + getRepuestos() + ", getHoras()=" + getHoras()
 				+ ", getVehiculo()=" + getVehiculo().toString() + "]";
 	}
+	public void agregarRepuestos (Averia averia, Collection<Repuesto> repuestos) {
+		averia.repuestos.addAll(repuestos);
+	}
+	public void eliminarRepuestos (Averia averia, Collection<Repuesto> repuestos) {
+		averia.repuestos.removeAll(repuestos);
+	}
+	@Override
+	public Double calcularPresupuesto(Collection<Repuesto> repuestos) {
+		Double presupuesto = 0.0;
+		for (Repuesto repuesto : repuestos) {
+			if (repuesto.getCantidad() != null && repuesto.getPrecio() != null) {
+				presupuesto += repuesto.getPrecio() * repuesto.getCantidad();
+			} else {
+				presupuesto += 0.0;
+				System.out.println("Hay algun campo del calculo igual a null");
+			}
+		}
+		
+		return presupuesto;
+	}
+
 	public Averia(String descripcionAveria, Date fechaIngreso, Collection<Repuesto> repuestos, int horas,
 			Vehiculo vehiculo) {
 		super();
@@ -98,7 +121,5 @@ public class Averia {
 		setHoras(horas);
 		setVehiculo(vehiculo);
 	}
-	
-	
 	
 }

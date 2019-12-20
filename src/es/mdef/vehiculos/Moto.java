@@ -1,10 +1,12 @@
 package es.mdef.vehiculos;
 
 import es.mdef.interfaces.Arrancable;
+import es.mdef.interfaces.Matriculable;
 
-public class Moto extends VehiculoConRuedas implements Arrancable {
+public class Moto extends VehiculoConRuedas implements Arrancable, Matriculable {
 
 	Object[] ruedas = new Object[2];
+	String matricula;
 	
 	@Override
 	public int getNumeroDeRuedas() {
@@ -17,7 +19,13 @@ public class Moto extends VehiculoConRuedas implements Arrancable {
 
 	@Override
 	public String toString() {
-		return "Moto: " + super.toString();
+		return "Moto: " + super.toString() + mostrarMatricula();
+	}
+
+	@Override
+	public String getMatricula() {
+		
+		return matricula;
 	}
 
 }

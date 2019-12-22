@@ -98,6 +98,7 @@ public class Persona {
 		return getNombre() + " " + getApellidos() + ", Direccion: "
 				+ getDireccion() + ", (Teléfono: " + getTelefono() + ")";
 	}
+
 	public Persona(String nombre, String apellidos) {
 		super();
 		setNombre(nombre);

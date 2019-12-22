@@ -3,22 +3,24 @@ package es.mdef.taller;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Set;
 
 import es.mdef.interfaces.Almacenable;
 
-public class Almacen implements Almacenable{
+public class Almacen implements Almacenable {
 	
-	private Collection<Repuesto> stock;
+	private Set<Repuesto> stock;
 		
 	
-	/**
-	 * @return the nivelMin
-	 */
 	@Override
 	public void agregarStock(Repuesto repuesto, int cantidadAgregada) {
 		if (stock.contains(repuesto)) {
 			repuesto.agregarCantidad(cantidadAgregada);
 			System.out.println("Agregada cantidad al repuesto " + repuesto.toString());
+		} else {
+			darAltaRepuesto(repuesto);
+			repuesto.agregarCantidad(cantidadAgregada);
+			System.out.println("El repuesto ha sido dado de alta en inventario");
 		}
 	}
 	@Override
@@ -26,19 +28,20 @@ public class Almacen implements Almacenable{
 		if (stock.contains(repuesto)) {
 			repuesto.eliminarCantidad (cantidadEliminada);
 			System.out.println("Eliminada cantidad de repuesto "+ repuesto.toString());
+		}else {
+			System.out.println("El repuesto " + repuesto.toString() + " NO se encuentra en inventario del Almacen para ser eliminado");
 		}
 		
 	}
 	@Override
-	public Integer solicitarRepuesto(Repuesto repuesto) {
+	public Integer solicitarRepuesto (Repuesto repuesto) {
 		Integer cantidadNecesaria = 0; 
 		if (repuesto.getCantidad() < repuesto.getNivelMin()) {
 			cantidadNecesaria = repuesto.getNivelMin() - repuesto.getCantidad();
-			System.out.println("Peligro de Stock de repuesto " + repuesto.getReferencia()+ ", necesario solicitar " + cantidadNecesaria + " unidades.");
-			
+			System.out.println("Peligro en Stock de repuesto " + repuesto.getReferencia()+ ", necesario solicitar " + cantidadNecesaria + " unidades.");
+				
 		}
-		return cantidadNecesaria;
-		
+		return cantidadNecesaria;		
 	}
 	@Override
 	public void darAltaRepuesto(Repuesto repuesto) {
@@ -69,17 +72,16 @@ public class Almacen implements Almacenable{
 	}
 	ArrayList<Repuesto> ordenarInventario (Collection<Repuesto> inventario) {
 		
-		ArrayList<Repuesto> bArrayList = new ArrayList<>(inventario);
+		ArrayList<Repuesto> inventarioPorReferencia = new ArrayList<>(inventario);
 		Comparator<Repuesto> c = new Comparator<Repuesto>() {
 
 			@Override
 			public int compare(Repuesto o1, Repuesto o2) {
-				return o1.getReferencia().compareTo(o2.getReferencia());
-			}
-			
+				return o1.compareTo(o2);
+			}			
 		};
-		bArrayList.sort(c);
-		return bArrayList;
+		inventarioPorReferencia.sort(c);
+		return inventarioPorReferencia;
 	}
 
 }

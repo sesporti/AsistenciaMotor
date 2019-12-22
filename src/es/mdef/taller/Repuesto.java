@@ -49,8 +49,6 @@ public class Repuesto implements Comparable<Repuesto>{
 	public Integer getCantidad() {
 		return cantidad;
 	}
-	
-	
 	/**
 	 * @return the nivelMin
 	 */
@@ -65,20 +63,13 @@ public class Repuesto implements Comparable<Repuesto>{
 		return "Repuesto [getReferencia()=" + getReferencia() + ", getPrecio()=" + getPrecio() + ", getCantidad()="
 				+ getCantidad() + " (NivelMinimo: " + getNivelMin() + ")]\n";
 	}
-	public Repuesto (String referencia, Double precio, Integer cantidad) {
-		this.cantidad = cantidad;
-		this.precio = precio;
-		this.referencia = referencia;
-	}
-//	public Integer setCantidad(int cantidad) {
-//					
-//		return this.cantidad = cantidad;
-//	}
-	public Integer agregarCantidad (int cantidad) {
-		return getCantidad() + cantidad;
+	public void agregarCantidad (int cantidad) {
+		
+		this.cantidad = getCantidad() + cantidad;
 	}
 	public void eliminarCantidad(int cantidadEliminada) {
-		this.cantidad -= cantidadEliminada;
+		
+		this.cantidad = getCantidad() - cantidadEliminada;
 		
 	}
 	@Override
@@ -86,4 +77,17 @@ public class Repuesto implements Comparable<Repuesto>{
 		
 		return getReferencia().compareTo(o.getReferencia());
 	}
+
+	
+	public Repuesto (String referencia, Double precio, Integer cantidad, Integer nivelMin) {
+		this.cantidad = cantidad;
+		this.precio = precio;
+		this.referencia = referencia;
+		this.nivelMin = nivelMin;
+		nombre = "Pendiente definir";
+		marca = "Pendiente definir";
+		modelo = "Pendiente definir";
+		proveedor = "Pendiente definir";
+	}
+
 }

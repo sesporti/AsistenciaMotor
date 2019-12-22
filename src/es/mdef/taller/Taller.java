@@ -1,9 +1,6 @@
 package es.mdef.taller;
 
 import java.util.Collection;
-import java.util.Date;
-
-import es.mdef.vehiculos.Vehiculo;
 
 public class Taller {
 
@@ -12,8 +9,8 @@ public class Taller {
 	private Collection<Trabajador> personal;
 	private Almacen almacen;
 	private Collection<Cliente> clientes;
-	private Collection<Averia> averiados;
-	private Collection<Reparacion> reparados;
+	private Collection<Averia> averias;
+	private Collection<Reparacion> repaciones;
 	
 //	public void ingresarVehiculo (Vehiculo vehiculo, Date fechaIngreso) {
 //		Collection<Averia> averiasEstimadas = new Collection<Averia>() {
@@ -29,7 +26,7 @@ public class Taller {
 //		};
 //	}
 /*
- * 	public String darPresupuestoInicial (Collection<Averia> averias, Integer horasTrabajoInicial){
+ * 	public String diagnosticarVehiculo (Collection<Averia> averias, Integer horasTrabajoInicial){
  * 
  * }
  * 	

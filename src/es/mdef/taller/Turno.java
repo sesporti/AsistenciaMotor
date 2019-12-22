@@ -44,10 +44,7 @@ public class Turno {
 	}
 
 	public static Turno cogerTurno() {
-//		Turno nuevoTurno = new Turno();
-//		nuevoTurno.setValor(contador++);
-//		return nuevoTurno;
-		
+
 		return new Turno(contador++);
 	}
 

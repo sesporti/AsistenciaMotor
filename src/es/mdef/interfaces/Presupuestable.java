@@ -1,12 +1,11 @@
 package es.mdef.interfaces;
 
-import java.util.Collection;
-
-import es.mdef.taller.Repuesto;
-
 public interface Presupuestable {
 	
-	Double calcularPresupuesto(Collection<Repuesto> repuestos);
+	Double PRECIO_HORA = 24.87;
 	
+	Double calcularPresupuesto();
+	Double calcularHoras ();
+		
 
 }

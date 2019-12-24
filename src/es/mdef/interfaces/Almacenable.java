@@ -1,15 +1,15 @@
 package es.mdef.interfaces;
 
-import es.mdef.taller.Repuesto;
+import es.mdef.taller.RepuestoAlmacen;
+
 
 public interface Almacenable{
 	
 	
-	void agregarStock (Repuesto repuesto, int cantidad);
-	void eliminarStock (Repuesto repuesto, int cantidad);
-	Integer solicitarRepuesto (Repuesto repuesto);
-	void darAltaRepuesto (Repuesto repuesto);
-	void darBajaRepuesto (Repuesto repuesto);
+	void agregarStock (RepuestoAlmacen repuesto, int cantidad);
+	void eliminarStock (RepuestoAlmacen repuesto, int cantidad);
+	Integer solicitarRepuesto (RepuestoAlmacen repuesto, Integer cantidadNecesaria);
+	Boolean hayRepuesto (RepuestoAlmacen repuesto, Integer cantidadNecesaria);
 
 
 }

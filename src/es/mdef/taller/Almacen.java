@@ -4,17 +4,26 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Set;
+import java.util.TreeSet;
 
 import es.mdef.interfaces.Almacenable;
 
 public class Almacen implements Almacenable {
 	
-	private Set<Repuesto> stock;
+	private Set<RepuestoAlmacen> stock;
 		
-	
+	public Almacen () {
+		stock = new TreeSet<>();
+	}
+	/**
+	 * @return the stock
+	 */
+	public Set<RepuestoAlmacen> getStock() {
+		return stock;
+	}
 	@Override
-	public void agregarStock(Repuesto repuesto, int cantidadAgregada) {
-		if (stock.contains(repuesto)) {
+	public void agregarStock(RepuestoAlmacen repuesto, int cantidadAgregada) {
+		if (getStock().contains(repuesto)) {
 			repuesto.agregarCantidad(cantidadAgregada);
 			System.out.println("Agregada cantidad al repuesto " + repuesto.toString());
 		} else {
@@ -24,8 +33,8 @@ public class Almacen implements Almacenable {
 		}
 	}
 	@Override
-	public void eliminarStock(Repuesto repuesto, int cantidadEliminada) {
-		if (stock.contains(repuesto)) {
+	public void eliminarStock(RepuestoAlmacen repuesto, int cantidadEliminada) {
+		if (getStock().contains(repuesto)) {
 			repuesto.eliminarCantidad (cantidadEliminada);
 			System.out.println("Eliminada cantidad de repuesto "+ repuesto.toString());
 		}else {
@@ -34,54 +43,68 @@ public class Almacen implements Almacenable {
 		
 	}
 	@Override
-	public Integer solicitarRepuesto (Repuesto repuesto) {
-		Integer cantidadNecesaria = 0; 
+	public Integer solicitarRepuesto (RepuestoAlmacen repuesto, Integer cantidadNecesaria) {
+		Integer necesidadRepuesto = 0; 
 		if (repuesto.getCantidad() < repuesto.getNivelMin()) {
-			cantidadNecesaria = repuesto.getNivelMin() - repuesto.getCantidad();
-			System.out.println("Peligro en Stock de repuesto " + repuesto.getReferencia()+ ", necesario solicitar " + cantidadNecesaria + " unidades.");
+			necesidadRepuesto = repuesto.getNivelMin() - repuesto.getCantidad();
+			System.out.println("Peligro en Stock de repuesto " + repuesto.getReferencia()+ ", necesario solicitar " + necesidadRepuesto + " unidades.");
 				
 		}
-		return cantidadNecesaria;		
+		return necesidadRepuesto;		
 	}
-	@Override
-	public void darAltaRepuesto(Repuesto repuesto) {
-		if (! stock.contains(repuesto)) {
-			stock.add(repuesto);
+	public void darAltaRepuesto(RepuestoAlmacen repuesto) {
+		try {
+			if (! getStock().contains(repuesto)) {
+				getStock().add(repuesto);
+			} else {
+				System.out.println("El repuesto ya se encuentra dado de alta en inventario.");
+			}
+		} catch (NullPointerException e) {
+			System.out.println(e.getMessage());
 		}
 	}
-	@Override
-	public void darBajaRepuesto(Repuesto repuesto) {
-		if (stock.contains(repuesto)) {
-			stock.remove(repuesto);
+	public void darBajaRepuesto(RepuestoAlmacen repuesto) {
+		if (getStock().contains(repuesto)) {
+			getStock().remove(repuesto);
 		} else {
 			System.out.println("El repuesto no se encuentra en inventario.");
 		}
-		
 	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-
+		ordenarInventario(getStock());
 		String inventario = "";
-		for (Repuesto repuesto : stock) {
+		for (RepuestoAlmacen repuesto : stock) {
 			inventario += repuesto.toString();
 		}
-		return "El inventario del almacen es el siguiente: " + inventario;
+		return "INVENTARIO DEL ALMACEN:\n" + inventario;
 	}
-	ArrayList<Repuesto> ordenarInventario (Collection<Repuesto> inventario) {
+	ArrayList<RepuestoAlmacen> ordenarInventario (Collection<RepuestoAlmacen> inventario) {
 		
-		ArrayList<Repuesto> inventarioPorReferencia = new ArrayList<>(inventario);
-		Comparator<Repuesto> c = new Comparator<Repuesto>() {
+		ArrayList<RepuestoAlmacen> inventarioPorNombre = new ArrayList<>(inventario);
+		Comparator<RepuestoAlmacen> c = new Comparator<RepuestoAlmacen>() {
 
 			@Override
-			public int compare(Repuesto o1, Repuesto o2) {
-				return o1.compareTo(o2);
+			public int compare(RepuestoAlmacen o1, RepuestoAlmacen o2) {
+				return o1.getNombre().compareTo(o2.getNombre());
 			}			
 		};
-		inventarioPorReferencia.sort(c);
-		return inventarioPorReferencia;
+		inventarioPorNombre.sort(c);
+		return inventarioPorNombre;
 	}
-
+	@Override
+	public Boolean hayRepuesto(RepuestoAlmacen repuesto, Integer cantidadNecesaria) {
+		Boolean existencia = false;
+		for (RepuestoAlmacen repuesto2 : stock) {
+			if (repuesto2.equals(repuesto) && repuesto2.getCantidad() >= cantidadNecesaria) {
+				existencia = true;
+			}
+		}
+		return existencia;
+	}
+	
 }

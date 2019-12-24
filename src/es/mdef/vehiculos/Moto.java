@@ -19,7 +19,7 @@ public class Moto extends VehiculoConRuedas implements Arrancable, Matriculable 
 
 	@Override
 	public String toString() {
-		return "Moto: " + super.toString() + mostrarMatricula();
+		return "MOTO: " + super.toString() +" - "+ mostrarMatricula();
 	}
 
 	@Override

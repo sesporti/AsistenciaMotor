@@ -19,7 +19,7 @@ public class Coche extends VehiculoConRuedas implements Arrancable, Matriculable
 
 	@Override
 	public String toString() {
-		return "Placa " + mostrarMatricula() + " - " + super.toString();
+		return "COCHE: " + super.toString()+ " - "+ mostrarMatricula() ;
 	}
 
 	@Override

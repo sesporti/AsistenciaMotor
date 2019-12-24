@@ -95,7 +95,7 @@ public class Persona {
 	 */
 	@Override
 	public String toString() {
-		return getNombre() + " " + getApellidos() + ", Direccion: "
+		return "\n**"+getNombre() + " " + getApellidos() + ", Direccion: "
 				+ getDireccion() + ", (Teléfono: " + getTelefono() + ")";
 	}
 

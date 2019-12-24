@@ -1,7 +1,7 @@
 package es.mdef.taller;
 
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 
 import es.mdef.interfaces.Presupuestable;
 import es.mdef.vehiculos.Vehiculo;
@@ -10,10 +10,23 @@ public class Averia implements Presupuestable {
 	
 	private Identificador id;
 	private String descripcion;
-	private Date fechaIngreso;
-	private Collection<Repuesto> repuestosAveria;
+	private LocalDate fechaIngreso;
+	private Collection<RepuestoAveria> repuestosAveria;
 	private Integer horas;
 	private Vehiculo vehiculo;
+	private Boolean reparado;
+	
+	public Averia(String descripcionAveria, LocalDate localDate, Collection<RepuestoAveria> repuestos, int horas,
+			Vehiculo vehiculo) {
+		super();
+		this.id = new Identificador();
+		setDescripcion(descripcionAveria);
+		setFechaIngreso(localDate);
+		setRepuestos(repuestos);
+		setHoras(horas);
+		setVehiculo(vehiculo);
+		setReparacion(false);
+	}
 	
 	/**
 	 * @return the id
@@ -36,25 +49,25 @@ public class Averia implements Presupuestable {
 	/**
 	 * @return the fechaIngreso
 	 */
-	public Date getFechaIngreso() {
+	public LocalDate getFechaIngreso() {
 		return fechaIngreso;
 	}
 	/**
-	 * @param fechaIngreso the fechaIngreso to set
+	 * @param localDate the fechaIngreso to set
 	 */
-	private void setFechaIngreso(Date fechaIngreso) {
-		this.fechaIngreso = fechaIngreso;
+	private void setFechaIngreso(LocalDate localDate) {
+		this.fechaIngreso = localDate;
 	}
 	/**
 	 * @return the repuestos
 	 */
-	public Collection<Repuesto> getRepuestos() {
+	public Collection<RepuestoAveria> getRepuestos() {
 		return repuestosAveria;
 	}
 	/**
 	 * @param repuestos the repuestos to set
 	 */
-	private void setRepuestos(Collection<Repuesto> repuestos) {
+	private void setRepuestos(Collection<RepuestoAveria> repuestos) {
 		this.repuestosAveria = repuestos;
 	}
 	/**
@@ -81,6 +94,18 @@ public class Averia implements Presupuestable {
 	private void setVehiculo(Vehiculo vehiculo) {
 		this.vehiculo = vehiculo;
 	}
+	/**
+	 * @return the reparacion
+	 */
+	public Boolean getReparacion() {
+		return reparado;
+	}
+	/**
+	 * @param reparacion the reparacion to set
+	 */
+	protected void setReparacion(Boolean reparacion) {
+		this.reparado = reparacion;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -90,43 +115,41 @@ public class Averia implements Presupuestable {
 				+ getFechaIngreso() + ", getRepuestos()=" + getRepuestos().toString() + ", getHoras()=" + getHoras()
 				+ ", getVehiculo()=" + getVehiculo().toString() + "]";
 	}
-	public void agregarRepuestos (Averia averia, Collection<Repuesto> repuestos) {
-		averia.repuestosAveria.addAll(repuestos);
+	public void agregarRepuesto (RepuestoAveria repuesto) {
+		repuestosAveria.add(repuesto);
+		
 	}
-	public void eliminarRepuestos (Averia averia, Collection<Repuesto> repuestos) {
-		averia.repuestosAveria.removeAll(repuestos);
+	public void eliminarRepuesto (RepuestoAveria repuesto) {
+		for (RepuestoAveria repuesto2 : repuestosAveria) {
+			if (repuesto2.equals(repuesto)) {
+				repuestosAveria.remove(repuesto);
+			}
+		}
 	}
 	@Override
 	public Double calcularPresupuesto () {
 		Double presupuesto = 0.0;
-		for (Repuesto repuesto : repuestosAveria) {
+		for (RepuestoAveria repuesto : repuestosAveria) {
 			if (repuesto.getCantidad() != null && repuesto.getPrecio() != null) {
-				System.out.println("\nPresupuesto Repuesto:" + repuesto.getReferencia() + " X " + repuesto.getCantidad() + " = " + (repuesto.getPrecio() * repuesto.getCantidad()) + " euros.");
+//				System.out.println("\nPresupuesto Repuesto:" + repuesto.getReferencia() + " X " + repuesto.getCantidad() + " = " + (repuesto.getPrecio() * repuesto.getCantidad()) + " euros.");
 				presupuesto += repuesto.getPrecio()*repuesto.getCantidad();
 			} else {
 				presupuesto += 0.0;
 				System.out.println("Hay algun campo (precio o cantidad) del repuesto " + repuesto.getReferencia() + "igual a null");
 			}
+//			System.out.println("Total Repuestos = " + presupuesto + ", + Total Mano de Obra = " + horas + " X " + PRECIO_HORA + " = " + calcularHoras() + " euros.\n"
+//					+ "TOTAL PRESUPUESTO AVERIA = " + getDescripcion()+" ("+getId() + "), " + (presupuesto + calcularHoras()) + " euros.");
 		}
-		System.out.println("Total Repuestos = " + presupuesto + ", + Total Mano de Obra = " + horas + " X " + PRECIO_HORA + " = " + calcularHoras() + " euros.\n"
-				+ "TOTAL PRESUPUESTO AVERIA = " + (presupuesto + calcularHoras()) + " euros.");
-		
+				
 		return presupuesto;
 	}
 	@Override
 	public Double calcularHoras() {
 		return this.horas * PRECIO_HORA;
 	}
-	public Averia(String descripcionAveria, Date fechaIngreso, Collection<Repuesto> repuestos, int horas,
-			Vehiculo vehiculo) {
-		super();
-		this.id = new Identificador();
-		setDescripcion(descripcionAveria);
-		setFechaIngreso(fechaIngreso);
-		setRepuestos(repuestos);
-		setHoras(horas);
-		setVehiculo(vehiculo);
+	public void repararAveria() {
+		setReparacion(true);
 	}
-
+	
 	
 }

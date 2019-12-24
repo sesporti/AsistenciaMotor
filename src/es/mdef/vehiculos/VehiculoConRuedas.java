@@ -14,7 +14,7 @@ public abstract class VehiculoConRuedas extends Vehiculo {
 
 	@Override
 	public String toString() {
-		return super.toString() + ", " + getNumeroDeRuedas() + " ruedas";
+		return super.toString() + ", con " + getNumeroDeRuedas() + " ruedas ";
 	}
 
 	

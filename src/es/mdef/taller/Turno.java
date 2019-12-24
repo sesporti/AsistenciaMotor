@@ -2,10 +2,14 @@ package es.mdef.taller;
 
 public class Turno {
 
-	private static Turno turnoActual = new Turno(5);
+	private static Turno turnoActual = new Turno(1);
 	private static int contador = turnoActual.getValor();
-	private final int valor;// = -1;
-
+	private final int valor;
+	
+	private Turno(int valor) {
+		this.valor = valor;
+	}
+	
 	public static Turno getTurnoActual() {
 		return new Turno(verValorActual());
 	}
@@ -14,21 +18,7 @@ public class Turno {
 		return valor;
 	}
 
-//	private void setValor(int valor) {
-//		this.valor = valor;
-//	}
-	
-//	private Turno() {
-//		valor = new OtraClaseQuePuedeRomper("onif", true);
-//	}
-	
-	private Turno(int valor) {
-//		setValor(valor);
-		this.valor = valor;
-	}
-
 	protected static void pasaTurno() {
-//		turnoActual.setValor(turnoActual.getValor() + 1);
 		turnoActual = new Turno(turnoActual.getValor() + 1);
 		System.out.println("info: pasado turno a "
 				+ turnoActual.getValor());

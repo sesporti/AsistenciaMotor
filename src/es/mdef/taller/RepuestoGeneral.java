@@ -64,7 +64,9 @@ public abstract class RepuestoGeneral implements Comparable<RepuestoGeneral> {
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public abstract String toString();
+	public String toString() {
+		return getNombre() + " (" + getReferencia() + "), precio = " + getPrecio() +" euros";
+	}
 
 	@Override
 	public int compareTo(RepuestoGeneral o) {
@@ -72,15 +74,20 @@ public abstract class RepuestoGeneral implements Comparable<RepuestoGeneral> {
 		return getReferencia().compareTo(o.getReferencia());
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
 		result = prime * result + ((referencia == null) ? 0 : referencia.hashCode());
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -90,11 +97,6 @@ public abstract class RepuestoGeneral implements Comparable<RepuestoGeneral> {
 		if (getClass() != obj.getClass())
 			return false;
 		RepuestoGeneral other = (RepuestoGeneral) obj;
-		if (nombre == null) {
-			if (other.getNombre() != null)
-				return false;
-		} else if (!nombre.equals(other.nombre))
-			return false;
 		if (referencia == null) {
 			if (other.referencia != null)
 				return false;

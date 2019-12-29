@@ -5,20 +5,21 @@ package es.mdef.taller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Scanner;
-
 
 import es.mdef.vehiculos.Vehiculo;
 
-public class Taller  {
+public class Taller {
 
 	private final String NOMBRE = "Talleres QUEVEDO SA.";
 	private final String CIF = "123456789-A";
-//	private Collection<Trabajador> personal;
+//	private Collection<Trabajador> personal;//utilizar si se quiere llevar un control de trabajadores.
 	private Almacen almacen;
 	private Collection<Cliente> clientes;
 	private Collection<Averia> averias;
-	private Collection<Reparacion> repaciones;
+	private Collection<Reparacion> reparaciones;
 	private Scanner entradaDatos;
 
 	/**
@@ -62,56 +63,145 @@ public class Taller  {
 	 * @return the repaciones
 	 */
 	public Collection<Reparacion> getRepaciones() {
-		return repaciones;
+		return reparaciones;
 	}
 	
+	/**
+	 * @param vehiculo
+	 * @return Devuelve las acciones necesarias para ingresar un vehiculo en el taller. Permite dar de alta un vehiculo si no existe, e incluso un cliente si este no existe.
+	 * Durante el ingreso se realizará el diagnostico inicial del vehículo y se da un presupuesto inicial de reparacion de todas las averias.
+	 */
 	public void ingresarVehiculo (Vehiculo vehiculo) {
 		entradaDatos = new Scanner(System.in);
+		boolean encontrado = false;
 		for (Cliente cliente : clientes) {
 			if (cliente.getVehiculos().contains(vehiculo)) {
-				ArrayList<Averia> averias = new ArrayList<>();
-				String agregarAveria;
-				System.out.println("¿Agregar averia? (Y o N)");
-				agregarAveria = entradaDatos.next();
-				while (agregarAveria.equalsIgnoreCase("Y")) {
-					Averia averia = new Averia("Diagnostico Inicial", LocalDate.now(), new ArrayList<>(), 1, vehiculo);
-					String necesitaRepuesto;
-					System.out.println("¿Agregar repuesto necesario? (Y o N)");
-					necesitaRepuesto = entradaDatos.next();
-					while (necesitaRepuesto.equalsIgnoreCase("Y")) {
-						System.out.println("Introduca referencia y cantidad.");
-						String referencia = entradaDatos.next();
-						Integer cantidad = entradaDatos.nextInt();
-						Boolean pendienteRepuesto = false;
-						for (RepuestoAlmacen repuestoAlmacen : almacen.getStock()) {
-							
-							if (repuestoAlmacen.getReferencia().equals(referencia) && repuestoAlmacen.hayRepuesto(repuestoAlmacen, cantidad)) {
-								averia.agregarRepuesto(new RepuestoAveria(referencia, repuestoAlmacen.getPrecio(), cantidad));
-							} else if (repuestoAlmacen.getReferencia().equals(referencia) && ! repuestoAlmacen.hayRepuesto(repuestoAlmacen, cantidad)) {
-								System.out.println("Sin Repuesto, solicitar a proveedor "+ repuestoAlmacen.solicitarRepuesto(repuestoAlmacen, cantidad) + " unidades.");
-								pendienteRepuesto = true;
-							} else {
-								System.out.println("El repuesto NO se encuentra en inventario del almacen, solicitar a proveedor y dar de alta");
-								pendienteRepuesto = true;
-							}
-						}
-						System.out.println("¿Agregar otro repuesto? (Y o N)");
-						necesitaRepuesto = entradaDatos.next();
-					}
-					averias.add(averia);
-					System.out.println("¿Agregar otra averia? (Y o N)");
-					agregarAveria = entradaDatos.next();
+				diagnosticarVehiculo(vehiculo);
+				System.out.println(presupuestoInicial(vehiculo));
+				encontrado = true;
+			}	
+		}
+		if (!encontrado) {
+			 System.out.println("El vehiculo no encontrado, asociar vehiculo a cliente o crear nuevo cliente con vehiculo.");
+			 System.out.println("Introduzca nombre y apellidos del cliente (en orden y pulsando intro)");
+			 String nombre = entradaDatos.next();
+			 String apellidos = entradaDatos.next();
+			 boolean clienteEncontrado = false;
+			 for (Cliente cliente : getClientes()) {
+				if (cliente.getNombre().equalsIgnoreCase(nombre) && cliente.getApellidos().equalsIgnoreCase(apellidos)) {
+					cliente.agregarVehiculo(vehiculo);
+					clienteEncontrado = true;
 				}
-			} else {
-				System.out.println("Introduzca nombre y apellidos del nuevo cliente: ");
-				clientes.add(new Cliente(entradaDatos.next(), entradaDatos.next(), vehiculo));
+			}
+			if (!clienteEncontrado) {
+				System.out.println("Cliente no encontrado, Cliente dado de alta");
+				Cliente nuevoCliente = new Cliente(nombre, apellidos, vehiculo);
+				getClientes().add(nuevoCliente);
 				ingresarVehiculo(vehiculo);
 			}
-			cliente.pedirTurno();
 		}
-				
 	}
-	public String diagnosticarVehiculo (Vehiculo vehiculo) {
+	/**
+	 * @param vehiculo
+	 * @return Devuelve en consola acciones para dar de alta averias, asociar repuestos a averias y dar turno a todas las averias
+	 */
+	private void diagnosticarVehiculo (Vehiculo vehiculo) {
+		
+		System.out.println("Diagnosticando " + vehiculo.toString());
+		
+		ArrayList<Averia> averias1 = new ArrayList<>();//creo ArrayList para incluir todas las averias asociadas al vehiculo
+		
+		String masAverias = "Y";
+		System.out.println("Desea añadir una averia? Y o N");
+		masAverias = entradaDatos.next();
+		
+		while (masAverias.equalsIgnoreCase("Y")) {
+			ArrayList<RepuestoAveria> repuestosAveria = new ArrayList<>();//creo arraylist de repuestos para incluir todos los repuestos asociados a la averia.
+			
+			HashSet<RepuestoAlmacen> repuestosAlmacen = new HashSet<>(almacen.getStock());//creo un conjunto (sin repeticiones) segun orden de inserción para repuestos de almacen
+			
+
+			String masRepuestos = "Y";
+			
+			while (masRepuestos.equalsIgnoreCase("Y")) {
+				
+//				JOptionPane.showMessageDialog(null, repuestosAlmacen.toString(), "Inventario Almacen", JOptionPane.INFORMATION_MESSAGE);//NO FUNCIONA, SI EN EL MAIN.
+			
+				System.out.println(repuestosAlmacen.toString());
+				System.out.println("Elija un repuesto de la lista anterior: introduciendo referencia y cantidad necesaria (por este orden, pulsando intro con cada dato introducido)");
+				
+				String referencia = entradaDatos.next();
+				RepuestoAlmacen repuestoAlmacen1 = null;
+				for (RepuestoAlmacen repuestoAlmacen : repuestosAlmacen) {
+					if (repuestoAlmacen.getReferencia().equalsIgnoreCase(referencia)) {
+						repuestoAlmacen1 = repuestoAlmacen;
+					}
+				}
+				Double precio = repuestoAlmacen1.getPrecio();
+				//creo un repuesto de averia (con datos introducidos por usuario) para asignarlo a la averia.				
+				RepuestoAveria repuestoNecesario = new RepuestoAveria(referencia, precio, entradaDatos.nextInt());
+				
+				if (almacen.hayRepuesto(repuestoNecesario)) {
+					
+					repuestosAveria.add(repuestoNecesario);
+					
+					RepuestoAlmacen repuestoAlmacen = getAlmacen().getRepuestoAlmacen(repuestoNecesario);//convierto el Repuesto de averia en un repuesto de almacen para poder eliminar la cantidad asignada a la averia del almacen.
+					
+					getAlmacen().eliminarStock(repuestoAlmacen, repuestoNecesario.getCantidad());
+				
+				} else {
+					System.out.println("El repuesto no existe o no hay suficiente cantidad.");
+				}
+			
+				System.out.println("Desea añadir otro repuesto? Y o N");
+				masRepuestos = entradaDatos.next();
+				
+			}
+			System.out.println("Introduzca horas de trabajo asociadas a la averia");
+			int horas = entradaDatos.nextInt();
+			
+			Averia averia = new Averia("Diagnostico inicial", LocalDate.now(), repuestosAveria, horas, vehiculo);//creo una averia
+			averia.setTurno(Turno.cogerTurno(new ArrayList<>(averias), getAlmacen()));
+			averias.add(averia);
+			averias1.add(averia);
+			System.out.println("Desea añadir otra averia? Y o N");
+			masAverias = entradaDatos.next();
+		}
+		averias1.sort(new Comparator<Averia>() {
+
+			@Override
+			public int compare(Averia o1, Averia o2) {
+				
+				return o1.compareTo(o2);
+			}
+		});
+		
+		System.out.println("AVERIAS asociadas al Vehiculo "+ vehiculo.toString() + ":\n" + averias1.toString());
+			
+	}
+	public void darTurno () {
+		ArrayList<Averia> averiasConRepuesto = new ArrayList<>(getAverias());
+		averiasConRepuesto.sort(new Comparator<Averia>() {
+
+			@Override
+			public int compare(Averia o1, Averia o2) {
+				
+				return o1.compareTo(o2);
+			}
+			
+		});
+		for (int i = 0; i < averiasConRepuesto.size(); i++) {
+			for (RepuestoAveria repuesto : averiasConRepuesto.get(i).getRepuestos()) {
+				if (repuesto.getCantidad() > (almacen.getRepuestoAlmacen(repuesto).getCantidad() + repuesto.getCantidad())) {
+					
+				}
+			}
+		}
+			
+			
+		
+	}
+	public String presupuestoInicial (Vehiculo vehiculo) {
 		Double presupuestoTotal = 0.0;
 		Double calculohorasTotal = 0.0;
 		Integer tiempo = 0;
@@ -122,14 +212,46 @@ public class Taller  {
 				tiempo +=averia.getHoras();
 			}			
 		}
-		return "Reparacion Inicial:\nPresupuesto estimado = " + presupuestoTotal + " (Mano de obra = " + calculohorasTotal + ")" +
+		return "Reparacion Inicial:\nPresupuesto estimado = " + presupuestoTotal + " euros (Mano de obra = " + calculohorasTotal + " euros)" +
 				"\nTOTAL PRESUPUESTO INICIAL: "+ (presupuestoTotal + calculohorasTotal) +" euros.\nEl numero de horas estimado es: " + tiempo + " horas.";
 	}
+	public String mostrarAverias (Vehiculo vehiculo) {
+		ArrayList<Averia> averias = new ArrayList<>(getAverias());
+		
+		averias.sort(new Comparator<Averia>() {
+
+			@Override
+			public int compare(Averia o1, Averia o2) {
+				
+				return o1.compareTo(o2);
+			}
+			
+		});
+		
+		System.out.println("Averias del vehiculo: " + vehiculo.toString());
+		String averiados = "";
+		for (Averia averia : averias) {
+			if (!averia.getReparacion() && averia.getVehiculo().equals(vehiculo)) {
+				averiados += averia.toString()+"\n";
+			}
+		}
+		return averiados;
+	}
+	public String mostrarReparaciones (Vehiculo vehiculo, LocalDate fechaEntrega) {
+		System.out.println("Reparaciones del vehiculo " + vehiculo.toString() + "\nFecha reparacion: " + fechaEntrega);
+		String reparados = "";
+		for (Reparacion reparacion : reparaciones) {
+			reparados += reparacion.toString()+"\n";
+		}
+		return reparados;
+	}
+	
 	public Taller () {
 		this.clientes = new ArrayList<>();
 		this.averias = new ArrayList<>();
-		this.repaciones = new ArrayList<>();
+		this.reparaciones = new ArrayList<>();
 		this.almacen = new Almacen();
 	}
+
 	
 }

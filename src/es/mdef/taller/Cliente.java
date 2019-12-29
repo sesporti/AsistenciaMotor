@@ -2,17 +2,12 @@ package es.mdef.taller;
 
 import java.util.ArrayList;
 
-
 import es.mdef.vehiculos.Vehiculo;
 
 public class Cliente extends Persona {
 	
-	private Turno turno;
 	private ArrayList<Vehiculo> vehiculos;
 
-	public Turno getTurno() {
-		return turno;
-	}
 	/**
 	 * @return the vehiculos
 	 */
@@ -20,22 +15,24 @@ public class Cliente extends Persona {
 		return vehiculos;
 	}
 
-	public void pedirTurno() {
-		turno = Turno.cogerTurno();
+	public void agregarVehiculo (Vehiculo vehiculo) {
+		if (!getVehiculos().contains(vehiculo)) {
+			getVehiculos().add(vehiculo);
+		}
 	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + ", con TURNO = " + getTurno() + ".**\n- Es propietario de VEHICULOS: "+ getVehiculos().toString();
+		return super.toString() + "**\n- Es propietario de VEHICULOS: "+ getVehiculos().toString();
 	}
 
 	public Cliente(String nombre, String apellidos, Vehiculo vehiculo) {
 		super(nombre, apellidos);
 		this.vehiculos = new ArrayList<>();
 		vehiculos.add(vehiculo);
-		this.turno = Turno.cogerTurno();
+		
 	}
 	
 

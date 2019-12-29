@@ -1,8 +1,7 @@
 package es.mdef.taller;
 
-import es.mdef.interfaces.Almacenable;
 
-public class RepuestoAlmacen extends RepuestoGeneral implements Almacenable{
+public class RepuestoAlmacen extends RepuestoGeneral {
 	
 	private Integer cantidad;
 	private Integer nivelMin;
@@ -47,36 +46,11 @@ public class RepuestoAlmacen extends RepuestoGeneral implements Almacenable{
 		this.cantidad = getCantidad() - cantidadEliminada;
 		
 	}
-	@Override
-	public void agregarStock(RepuestoAlmacen repuesto, int cantidad) {
-		repuesto.cantidad += cantidad;
-		
-	}
-	@Override
-	public void eliminarStock(RepuestoAlmacen repuesto, int cantidad) {
-		repuesto.cantidad -= cantidad;
-		
-	}
-	@Override
-	public Integer solicitarRepuesto(RepuestoAlmacen repuesto, Integer cantidadNecesaria) {
-		Integer necesidadRepuesto = 0;
-		if (! hayRepuesto(repuesto, cantidadNecesaria)) {
-			necesidadRepuesto = cantidadNecesaria + (repuesto.getNivelMin() - repuesto.getCantidad());
-		}
-		return necesidadRepuesto;
-	}
-	@Override
-	public Boolean hayRepuesto(RepuestoAlmacen repuesto, Integer cantidadNecesaria) {
-		Boolean existencia=true;
-		if (repuesto.getCantidad() < cantidadNecesaria) {
-			existencia = false;
-		}
-		return existencia;
-	}
+
 	@Override
 	public String toString() {
 		
-		return "Repuesto: ["+ getNombre()+ " ("+ getReferencia()+"), precio = "+ getPrecio()+ " euros, cantidad = "+ getCantidad()+ ", nivel minimo = "+getNivelMin()+ "]\n";
+		return "Repuesto: ["+ super.toString() + ", cantidad = "+ getCantidad()+ ", nivel minimo = "+getNivelMin()+ "]\n";
 	}
 
 }

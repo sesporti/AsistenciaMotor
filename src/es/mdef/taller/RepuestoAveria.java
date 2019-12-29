@@ -9,7 +9,7 @@ public class RepuestoAveria extends RepuestoGeneral {
 		super("Sin definir", referencia, precio);
 		this.cantidadAsignada = cantidad;
 	}
-	
+
 	/**
 	 * @return the cantidad
 	 */
@@ -20,6 +20,6 @@ public class RepuestoAveria extends RepuestoGeneral {
 	@Override
 	public String toString() {
 		
-		return "Info Repuesto Averia: [" + getNombre() + " (" + getReferencia() + "), cantidad = " + getCantidad() + ", precio = " + getPrecio()+"]";
+		return "Repuesto Averia: [" + super.toString() + ", cantidad = " + getCantidad() +"]";
 	}
 }

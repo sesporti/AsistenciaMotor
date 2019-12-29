@@ -1,6 +1,6 @@
 package es.mdef.taller;
 
-public class Persona {
+public class Persona implements Comparable<Persona>{
 	
 	private String nombre;
 	private String apellidos;
@@ -105,6 +105,11 @@ public class Persona {
 		setApellidos(apellidos);
 		setDireccion("SIN DEFINIR");
 		setTelefono("SIN DEFINIR");
+	}
+	@Override
+	public int compareTo(Persona o) {
+		
+		return getNombre().compareTo(o.getNombre());
 	}
 	
 }

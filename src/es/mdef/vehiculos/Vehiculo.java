@@ -1,14 +1,16 @@
 package es.mdef.vehiculos;
 
-import java.util.Objects;
+//import java.util.Objects;
 
-import es.mdef.interfaces.Coloreable;
+//import es.mdef.interfaces.Coloreable;
 
 
-public class Vehiculo implements Coloreable {
+
+public class Vehiculo {//implements Coloreable{
 
 	protected String modelo;
 	String color;
+	
 
 	/** Sirve para cambiar el color de un vehiculo si no tiene el mismo que
 	 * se pase por parametro.
@@ -16,20 +18,20 @@ public class Vehiculo implements Coloreable {
 	 * @param color para pintar
 	 * @return vehiculo si se pinta o null si ya tiene el mismo color
 	 */
-	public static Coloreable pintarVehiculo(Vehiculo vehiculo, String color) {
-		Coloreable vehiculoAux = null;
-		if(!Objects.equals(vehiculo.getColor().toUpperCase(), color.toUpperCase())) {
-			vehiculo.setColor(color);
-			vehiculoAux = vehiculo;
-		}
-		return vehiculoAux;
-	}
+//	public static Coloreable pintarVehiculo(Vehiculo vehiculo, String color) {
+//		Coloreable vehiculoAux = null;
+//		if(!Objects.equals(vehiculo.getColor().toUpperCase(), color.toUpperCase())) {
+//			vehiculo.setColor(color);
+//			vehiculoAux = vehiculo;
+//		}
+//		return vehiculoAux;
+//	}
 	
 	public String getModelo() {
 		return modelo;
 	}
 
-	@Override
+	//@Override
 	public String getColor() {
 		return color;
 	}
@@ -57,5 +59,7 @@ public class Vehiculo implements Coloreable {
 	public String toString() {
 		return modelo + " (" + getColor().toUpperCase() + ")";
 	}
+
+
 
 }

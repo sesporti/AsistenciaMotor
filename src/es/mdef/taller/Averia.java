@@ -6,7 +6,7 @@ import java.util.Collection;
 import es.mdef.interfaces.Presupuestable;
 import es.mdef.vehiculos.Vehiculo;
 
-public class Averia implements Presupuestable {
+public class Averia implements Presupuestable, Comparable<Averia>{
 	
 	private Identificador id;
 	private String descripcion;
@@ -15,6 +15,8 @@ public class Averia implements Presupuestable {
 	private Integer horas;
 	private Vehiculo vehiculo;
 	private Boolean reparado;
+	private Turno turno;
+
 	
 	public Averia(String descripcionAveria, LocalDate localDate, Collection<RepuestoAveria> repuestos, int horas,
 			Vehiculo vehiculo) {
@@ -25,7 +27,7 @@ public class Averia implements Presupuestable {
 		setRepuestos(repuestos);
 		setHoras(horas);
 		setVehiculo(vehiculo);
-		setReparacion(false);
+		setReparacion(false);		
 	}
 	
 	/**
@@ -103,17 +105,31 @@ public class Averia implements Presupuestable {
 	/**
 	 * @param reparacion the reparacion to set
 	 */
-	protected void setReparacion(Boolean reparacion) {
+	void setReparacion(Boolean reparacion) {
 		this.reparado = reparacion;
 	}
+	/**
+	 * @return the turno
+	 */
+	public Turno getTurno() {
+		return turno;
+	}
+	/**
+	 * @param turno the turno to set
+	 */
+	public void setTurno(Turno turno) {
+		this.turno = turno;
+	}
+
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Averia [getId()=" + getId() + ", getNombre()=" + getDescripcion() + ", getFechaIngreso()="
-				+ getFechaIngreso() + ", getRepuestos()=" + getRepuestos().toString() + ", getHoras()=" + getHoras()
-				+ ", getVehiculo()=" + getVehiculo().toString() + "]";
+		return "--> Averia (Turno = " + getTurno() + "): "+ "[Id=" + getId() + ", Descripcion: " + getDescripcion() + ", FechaIngreso="
+				+ getFechaIngreso() + ", Repuestos = " + getRepuestos().toString() + ", Horas-Trabajo =" + getHoras()
+				+ ", Vehículo = " + getVehiculo().toString() + "]\n";
 	}
 	public void agregarRepuesto (RepuestoAveria repuesto) {
 		repuestosAveria.add(repuesto);
@@ -149,6 +165,18 @@ public class Averia implements Presupuestable {
 	}
 	public void repararAveria() {
 		setReparacion(true);
+		Reparacion nuevaReparacion = new Reparacion(LocalDate.now());
+		nuevaReparacion.agregarAveriaReparada(this);
+		
+	}
+
+	@Override
+	public int compareTo(Averia o) {
+		int comparacion = getFechaIngreso().compareTo(o.getFechaIngreso());
+		if (comparacion == 0) {
+			comparacion = getHoras().compareTo(o.getHoras());
+		}
+		return comparacion;
 	}
 	
 	

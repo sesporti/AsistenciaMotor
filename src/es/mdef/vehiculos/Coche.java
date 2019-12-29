@@ -8,7 +8,7 @@ public class Coche extends VehiculoConRuedas implements Arrancable, Matriculable
 	int numeroDeRuedas;
 	String matricula;
 
-	void setMatricula(String matricula) {
+	public void setMatricula(String matricula) {
 		this.matricula = matricula;
 	}
 	
@@ -19,7 +19,7 @@ public class Coche extends VehiculoConRuedas implements Arrancable, Matriculable
 
 	@Override
 	public String toString() {
-		return "COCHE: " + super.toString()+ " - "+ mostrarMatricula() ;
+		return "COCHE: " + super.toString()+ " - "+ mostrarMatricula();
 	}
 
 	@Override
@@ -27,7 +27,6 @@ public class Coche extends VehiculoConRuedas implements Arrancable, Matriculable
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((matricula == null) ? 0 : matricula.hashCode());
-		result = prime * result + ((modelo == null) ? 0 : modelo.hashCode());
 		return result;
 	}
 
@@ -45,11 +44,6 @@ public class Coche extends VehiculoConRuedas implements Arrancable, Matriculable
 				return false;
 		} else if (!matricula.equals(other.matricula))
 			return false;
-		if (modelo == null) {
-			if (other.modelo != null)
-				return false;
-		} else if (!modelo.equals(other.modelo))
-			return false;
 		return true;
 	}
 
@@ -64,10 +58,7 @@ public class Coche extends VehiculoConRuedas implements Arrancable, Matriculable
 		
 		return matricula;
 	}
-//	public Coche() {
-//	numeroDeRuedas = 4;
-//}
-
+	
 	public Coche(String color) {
 	//	this();
 	//	setColor(color); // como ya tengo el setter lo utilizo
@@ -80,5 +71,11 @@ public class Coche extends VehiculoConRuedas implements Arrancable, Matriculable
 		super(color, modelo);
 		numeroDeRuedas = 4;
 	}
+
+//	@Override
+//	public int compare(Matriculable o1, Matriculable o2) {
+//		
+//		return o1.getMatricula().compareTo(o2.getMatricula());
+//	}
 
 }

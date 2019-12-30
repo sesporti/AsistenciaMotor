@@ -37,7 +37,7 @@ public class Turno {
 	}
 
 	public static Turno cogerTurno(ArrayList<Averia> averias, Almacen almacen) {
-		Turno turno = null;
+		Turno turno = new Turno(0);
 		boolean darTurno = true;
 		
 		averias.sort(new Comparator<Averia>() {
@@ -52,7 +52,7 @@ public class Turno {
 
 		for (int i = 0; i < averias.size(); i++) {
 			for (RepuestoAveria repuesto : averias.get(i).getRepuestos()) {
-				if (repuesto.getCantidad() > (almacen.getRepuestoAlmacen(repuesto).getCantidad() + repuesto.getCantidad())) {
+				if (repuesto.getCantidad() < 0) {//> (almacen.getRepuestoAlmacen(repuesto).getCantidad() + repuesto.getCantidad())) {
 					darTurno = false;
 				}			
 			}

@@ -17,6 +17,13 @@ public class RepuestoAveria extends RepuestoGeneral {
 		return cantidadAsignada;
 	}
 
+	/**
+	 * @param cantidadAsignada the cantidadAsignada to set
+	 */
+	void setCantidadAsignada(Integer cantidadAsignada) {
+		this.cantidadAsignada = cantidadAsignada;
+	}
+
 	@Override
 	public String toString() {
 		

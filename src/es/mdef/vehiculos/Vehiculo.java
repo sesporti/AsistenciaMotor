@@ -1,6 +1,10 @@
 package es.mdef.vehiculos;
 
 //import java.util.Objects;
+//
+//import es.mdef.interfaces.Coloreable;
+
+//import java.util.Objects;
 
 //import es.mdef.interfaces.Coloreable;
 

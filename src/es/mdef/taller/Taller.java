@@ -91,6 +91,7 @@ public class Taller {
 				if (cliente.getNombre().equalsIgnoreCase(nombre) && cliente.getApellidos().equalsIgnoreCase(apellidos)) {
 					cliente.agregarVehiculo(vehiculo);
 					clienteEncontrado = true;
+					ingresarVehiculo(vehiculo);
 				}
 			}
 			if (!clienteEncontrado) {
@@ -127,6 +128,7 @@ public class Taller {
 				
 //				JOptionPane.showMessageDialog(null, repuestosAlmacen.toString(), "Inventario Almacen", JOptionPane.INFORMATION_MESSAGE);//NO FUNCIONA, SI EN EL MAIN.
 			
+				
 				System.out.println(repuestosAlmacen.toString());
 				System.out.println("Elija un repuesto de la lista anterior: introduciendo referencia y cantidad necesaria (por este orden, pulsando intro con cada dato introducido)");
 				
@@ -150,23 +152,27 @@ public class Taller {
 					getAlmacen().eliminarStock(repuestoAlmacen, repuestoNecesario.getCantidad());
 				
 				} else {
-					System.out.println("El repuesto no existe o no hay suficiente cantidad.");
+					System.out.println("SIN REPUESTO: El repuesto no existe o no hay suficiente cantidad.");
+					repuestoNecesario.setCantidadAsignada(- repuestoNecesario.getCantidad());
 				}
 			
 				System.out.println("Desea añadir otro repuesto? Y o N");
 				masRepuestos = entradaDatos.next();
 				
 			}
+			
 			System.out.println("Introduzca horas de trabajo asociadas a la averia");
 			int horas = entradaDatos.nextInt();
 			
 			Averia averia = new Averia("Diagnostico inicial", LocalDate.now(), repuestosAveria, horas, vehiculo);//creo una averia
-			averia.setTurno(Turno.cogerTurno(new ArrayList<>(averias), getAlmacen()));
+
 			averias.add(averia);
 			averias1.add(averia);
 			System.out.println("Desea añadir otra averia? Y o N");
 			masAverias = entradaDatos.next();
 		}
+		
+		darTurno();		
 		averias1.sort(new Comparator<Averia>() {
 
 			@Override
@@ -176,12 +182,13 @@ public class Taller {
 			}
 		});
 		
+		
 		System.out.println("AVERIAS asociadas al Vehiculo "+ vehiculo.toString() + ":\n" + averias1.toString());
 			
 	}
 	public void darTurno () {
-		ArrayList<Averia> averiasConRepuesto = new ArrayList<>(getAverias());
-		averiasConRepuesto.sort(new Comparator<Averia>() {
+		ArrayList<Averia> averias = new ArrayList<>(getAverias());
+		averias.sort(new Comparator<Averia>() {
 
 			@Override
 			public int compare(Averia o1, Averia o2) {
@@ -190,12 +197,8 @@ public class Taller {
 			}
 			
 		});
-		for (int i = 0; i < averiasConRepuesto.size(); i++) {
-			for (RepuestoAveria repuesto : averiasConRepuesto.get(i).getRepuestos()) {
-				if (repuesto.getCantidad() > (almacen.getRepuestoAlmacen(repuesto).getCantidad() + repuesto.getCantidad())) {
-					
-				}
-			}
+		for (int i = 0; i < averias.size(); i++) {
+			averias.get(i).setTurno(Turno.cogerTurno(averias, almacen));
 		}
 			
 			

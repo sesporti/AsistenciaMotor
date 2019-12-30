@@ -1,6 +1,6 @@
 package es.mdef.taller;
 
-import java.time.LocalDate;
+//import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -108,86 +108,150 @@ public class Taller_Main {
 //		System.out.println("NO hay Clientes? "+quevedo.getClientes().isEmpty());
 //		System.out.println("NO hay Repuestos en Almacen? "+quevedo.getAlmacen().getStock().isEmpty());
 //		System.out.println("NO Hay Reparaciones? "+quevedo.getRepaciones().isEmpty());
-		
-//		quevedo.ingresarVehiculo(coche);
-//		quevedo.ingresarVehiculo(moto1);		
-//		quevedo.ingresarVehiculo(coche3);
+		/*
+		 * Lo siguiente se puede utilizar para interactuar con la consola (ingresarVehiculo).
+		 */
+		quevedo.ingresarVehiculo(coche);
+		quevedo.ingresarVehiculo(moto1);		
+		quevedo.ingresarVehiculo(coche3);
 			
-		
-		/*
-		 * CREO REPUESTOS PARA LAS AVERIAS
-		 */
-		RepuestoAveria repuestoAveria = new RepuestoAveria("3", 568.95, 1);
-		RepuestoAveria repuestoAveria2 = new RepuestoAveria("4", 20.0, 2);
-		RepuestoAveria repuestoAveria3 = new RepuestoAveria("5", 120.3, 2);
-		RepuestoAveria repuestoAveria4 = new RepuestoAveria("6", 15.25, 1);
-		
-		/*
-		 * AÑADO REPUESTOS A LA AVERIA, CREANDO UNA LIST DE REPUESTOS PARA CADA AVERIA.
-		 */
-		ArrayList<RepuestoAveria> repuestos = new ArrayList<>();
-		
-		if (quevedo.getAlmacen().hayRepuesto(repuestoAveria) && quevedo.getAlmacen().hayRepuesto(repuestoAveria2) 
-			&& quevedo.getAlmacen().hayRepuesto(new RepuestoAveria("1", 158.25, 1))) {
-			
-			repuestos.add(repuestoAveria);
-			repuestos.add(repuestoAveria2);
-			repuestos.add(new RepuestoAveria("1", 158.25, 1));
-			quevedo.getAlmacen().eliminarStock(repuestoAlmacen2, repuestoAveria.getCantidad());
-			quevedo.getAlmacen().eliminarStock(repuestoAlmacen3, repuestoAveria2.getCantidad());
-			quevedo.getAlmacen().eliminarStock(repuestoAlmacen, 1);
-		}
-		//Creo la averia con los repuestos ha utilizar y las horas de trabajo, asignandola a un vehiculo.		
-		Averia averia = new Averia("Cambio de motor", LocalDate.of(2019, 12, 31), repuestos, 23, coche);
-		//Añado la averia al total de averias del taller
-		
-		quevedo.getAverias().add(averia);
-		
-		/*
-		 * REALIZO LO MISMO CON MOTO2, cambiado a COCHE
-		 */
-				
-		ArrayList<RepuestoAveria> repuestos2 = new ArrayList<>();
-		
-		if (quevedo.getAlmacen().hayRepuesto(repuestoAveria3)) {
-			repuestos2.add(repuestoAveria3);
-			quevedo.getAlmacen().eliminarStock(repuestoAlmacen4, repuestoAveria3.getCantidad());
-		}
-		
-		Averia averia2 = new Averia("Diagnostico averia", LocalDate.of(2019, 11, 20), repuestos2, 2, coche);
-		
-		quevedo.getAverias().add(averia2);
-		
-
-		/*
-		 * REALIZO LO MISMO CON COCHE 1
-		 */
-		
-		ArrayList<RepuestoAveria> repuestos3 = new ArrayList<>();
-		
-		quevedo.getAlmacen().darAltaRepuesto(new RepuestoAlmacen("6", 15.25, 25, 10));
-		for (RepuestoAlmacen repuesto : quevedo.getAlmacen().getStock()) {
-			if (repuesto.getReferencia().equals("6")) {
-				repuesto.nombre = "Válvula neumático";
-			}
-		}
-		
-		if (quevedo.getAlmacen().hayRepuesto(repuestoAveria4)) {
-			repuestos3.add(repuestoAveria4);
-			quevedo.getAlmacen().eliminarStock(quevedo.getAlmacen().getRepuestoAlmacen(repuestoAveria4), repuestoAveria4.getCantidad());
-		}
-		
-		Averia averia3 = new Averia("Averia con repuesto no existente en almacen", LocalDate.of(2019, 11, 20), repuestos3, 5, coche1);
-				
-		quevedo.getAverias().add(averia3);
-		
-		averia3.setTurno(Turno.cogerTurno((ArrayList<Averia>) quevedo.getAverias(), quevedo.getAlmacen()));
-		averia.setTurno(Turno.cogerTurno((ArrayList<Averia>) quevedo.getAverias(), quevedo.getAlmacen()));
-		averia2.setTurno(Turno.cogerTurno((ArrayList<Averia>) quevedo.getAverias(), quevedo.getAlmacen()));
-		
+//		
+//		/*
+//		 * A PARTIR DE AQUI, SE REALIZA PASO POR PASO LO QUE REALIZARÍA INGRESAR VEHICULO HASTA QUE SE LE DA EL TURNO A CADA AVERIA CREADA.
+//		 * CREO REPUESTOS PARA LAS AVERIAS
+//		 */
+//		RepuestoAveria repuestoAveria = new RepuestoAveria("3", 568.95, 1);
+//		RepuestoAveria repuestoAveria2 = new RepuestoAveria("4", 20.0, 2);
+//		RepuestoAveria repuestoAveria3 = new RepuestoAveria("5", 120.3, 2);
+//		RepuestoAveria repuestoAveria4 = new RepuestoAveria("6", 15.25, 1);
+//		
+//		/*
+//		 * AÑADO REPUESTOS A LA AVERIA, CREANDO UNA LIST DE REPUESTOS PARA CADA AVERIA.
+//		 */
+//		ArrayList<RepuestoAveria> repuestos = new ArrayList<>();
+//		
+//		repuestos.add(repuestoAveria);
+//		repuestos.add(repuestoAveria2);
+//		repuestos.add(new RepuestoAveria("1", 158.25, 1));
+//		
+//		for (RepuestoAveria repuestoNecesario : repuestos) {
+//			if (quevedo.getAlmacen().hayRepuesto(repuestoNecesario)) {
+//			
+//				RepuestoAlmacen repuestoAlma = quevedo.getAlmacen().getRepuestoAlmacen(repuestoNecesario);//convierto el Repuesto de averia en un repuesto de almacen para poder eliminar la cantidad asignada a la averia del almacen.
+//				
+//				quevedo.getAlmacen().eliminarStock(repuestoAlma, repuestoNecesario.getCantidad());
+//		
+//			} else {
+//				System.out.println("SIN REPUESTO: El repuesto no existe o no hay suficiente cantidad.");
+//				System.out.println("Solicitar a proveedor la cantidad de "+quevedo.getAlmacen().solicitarRepuesto(repuestoNecesario)+" uds.");
+//				repuestoNecesario.setCantidadAsignada(- repuestoNecesario.getCantidad());
+//				
+//			}
+//		}
+//		
+//		//Creo la averia con los repuestos ha utilizar y las horas de trabajo, asignandola a un vehiculo.		
+//		
+//		Averia averia = new Averia("Cambio de motor", LocalDate.of(2019, 12, 31), repuestos, 23, coche);
+//		
+//		//Añado la averia al total de averias del taller
+//		
+//		quevedo.getAverias().add(averia);
+//		
+//		/*
+//		 * REALIZO LO MISMO CON MOTO2, cambiado a COCHE
+//		 */
+//				
+//		ArrayList<RepuestoAveria> repuestos2 = new ArrayList<>();
+//		
+//		repuestos2.add(repuestoAveria3);
+//		
+//		for (RepuestoAveria repuestoNecesario : repuestos2) {
+//			if (quevedo.getAlmacen().hayRepuesto(repuestoNecesario)) {
+//			
+//				RepuestoAlmacen repuestoAlma = quevedo.getAlmacen().getRepuestoAlmacen(repuestoNecesario);//convierto el Repuesto de averia en un repuesto de almacen para poder eliminar la cantidad asignada a la averia del almacen.
+//				
+//				quevedo.getAlmacen().eliminarStock(repuestoAlma, repuestoNecesario.getCantidad());
+//		
+//			} else {
+//				System.out.println("SIN REPUESTO: El repuesto no existe o no hay suficiente cantidad.");
+//				System.out.println("Solicitar a proveedor la cantidad de "+quevedo.getAlmacen().solicitarRepuesto(repuestoNecesario)+" uds.");
+//				repuestoNecesario.setCantidadAsignada(- repuestoNecesario.getCantidad());
+//			}
+//		}
+//		Averia averia2 = new Averia("Diagnostico averia", LocalDate.of(2019, 11, 20), repuestos2, 2, coche);
+//		
+//		quevedo.getAverias().add(averia2);
+//		
+//
+//		/*
+//		 * REALIZO LO MISMO CON COCHE 1
+//		 */
+//		
+//		ArrayList<RepuestoAveria> repuestos3 = new ArrayList<>();
+//		
+//		quevedo.getAlmacen().darAltaRepuesto(new RepuestoAlmacen("6", 15.25, 25, 10));
+//		for (RepuestoAlmacen repuesto : quevedo.getAlmacen().getStock()) {
+//			if (repuesto.getReferencia().equals("6")) {
+//				repuesto.nombre = "Válvula neumático";
+//			}
+//		}
+//		
+//		repuestos3.add(repuestoAveria4);
+//		
+//		for (RepuestoAveria repuestoNecesario : repuestos3) {
+//			if (quevedo.getAlmacen().hayRepuesto(repuestoNecesario)) {
+//			
+//				RepuestoAlmacen repuestoAlma = quevedo.getAlmacen().getRepuestoAlmacen(repuestoNecesario);//convierto el Repuesto de averia en un repuesto de almacen para poder eliminar la cantidad asignada a la averia del almacen.
+//				
+//				quevedo.getAlmacen().eliminarStock(repuestoAlma, repuestoNecesario.getCantidad());
+//		
+//			} else {
+//				System.out.println("SIN REPUESTO: El repuesto no existe o no hay suficiente cantidad.");
+//				System.out.println("Solicitar a proveedor la cantidad de "+quevedo.getAlmacen().solicitarRepuesto(repuestoNecesario)+" uds.");
+//				repuestoNecesario.setCantidadAsignada(- repuestoNecesario.getCantidad());
+//			}
+//		}
+//		
+//		Averia averia3 = new Averia("Averia con repuesto no existente en almacen", LocalDate.of(2019, 11, 20), repuestos3, 3, coche1);
+//				
+//		quevedo.getAverias().add(averia3);
+//
+//		/*
+//		 * REALIZO LO MISMO CON MOTO2
+//		 */
+//		
+//		ArrayList<RepuestoAveria> repuestos4 = new ArrayList<>();
+//		
+//		repuestos4.add(repuestoAveria2);
+//		repuestos4.add(repuestoAveria4);
+//		
+//		for (RepuestoAveria repuestoNecesario : repuestos4) {
+//			if (quevedo.getAlmacen().hayRepuesto(repuestoNecesario)) {
+//			
+//				RepuestoAlmacen repuestoAlma = quevedo.getAlmacen().getRepuestoAlmacen(repuestoNecesario);//convierto el Repuesto de averia en un repuesto de almacen para poder eliminar la cantidad asignada a la averia del almacen.
+//				
+//				quevedo.getAlmacen().eliminarStock(repuestoAlma, repuestoNecesario.getCantidad());
+//		
+//			} else {
+//				System.out.println("SIN REPUESTO: El repuesto no existe o no hay suficiente cantidad.");
+//				System.out.println("Solicitar a proveedor la cantidad de "+quevedo.getAlmacen().solicitarRepuesto(repuestoNecesario)+" uds.");
+//				repuestoNecesario.setCantidadAsignada(- repuestoNecesario.getCantidad());
+//			}
+//		}
+//		
+//		Averia averia4 = new Averia("Averia con repuesto no existente en almacen", LocalDate.of(2019, 12, 31), repuestos4, 10, moto2);
+//				
+//		quevedo.getAverias().add(averia4);		
+//		
+//		
+//		//DOY TURNO A TODAS LAS AVERIAS DEL TALLER
+//		
+//		quevedo.darTurno();
+//		
+//		
 		System.out.println(quevedo.mostrarAverias(coche));
-		System.out.println(quevedo.mostrarAverias(moto2));
-		System.out.println(quevedo.mostrarAverias(coche1));
+		System.out.println(quevedo.mostrarAverias(moto1));
+		System.out.println(quevedo.mostrarAverias(coche3));
 		
 		ArrayList<Averia> averias = new ArrayList<>(quevedo.getAverias());
 		averias.sort(new Comparator<Averia>() {

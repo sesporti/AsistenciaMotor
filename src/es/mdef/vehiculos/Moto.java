@@ -67,10 +67,10 @@ public class Moto extends VehiculoConRuedas implements Arrancable, Matriculable 
 		return true;
 	}
 
-//	@Override
-//	public int compare(Matriculable o1, Matriculable o2) {
-//		
-//		return o1.getMatricula().compareTo(o2.getMatricula());
-//	}
+	@Override
+	public int compareTo(Matriculable o1) {//, Matriculable o2) {
+		
+		return getMatricula().compareTo(o1.getMatricula());
+	}
 
 }

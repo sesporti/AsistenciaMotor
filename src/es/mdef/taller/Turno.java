@@ -1,7 +1,7 @@
 package es.mdef.taller;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+//import java.util.Comparator;
 
 public class Turno {
 
@@ -36,37 +36,32 @@ public class Turno {
 		return "Turno " + getValor();
 	}
 
-	public static Turno cogerTurno(ArrayList<Averia> averias, Almacen almacen) {
-		Turno turno = new Turno(0);
+	public static void cogerTurno(ArrayList<Averia> averias) {
+		Turno turno = new Turno(1);
 		boolean darTurno = true;
-		
-		averias.sort(new Comparator<Averia>() {
-
-			@Override
-			public int compare(Averia o1, Averia o2) {
-				
-				return o1.compareTo(o2);
-			}
-			
-		});
 
 		for (int i = 0; i < averias.size(); i++) {
 			for (RepuestoAveria repuesto : averias.get(i).getRepuestos()) {
 				if (repuesto.getCantidad() < 0) {//> (almacen.getRepuestoAlmacen(repuesto).getCantidad() + repuesto.getCantidad())) {
 					darTurno = false;
+				} else {
+					darTurno = true;
 				}			
 			}
-		}
-		if (!darTurno) {
-			turno = null;
+			
+			if (!darTurno) {
+				
+				turno = null;
+				averias.get(i).setTurno(turno);
 
-		} else {
-	
-			turno = new Turno(contador++);
+			} else {
+				
+				turno = new Turno(contador++);
+				averias.get(i).setTurno(turno);
+			
+			}
 			
 		}
-		
-		return turno;
 	}
 
 	@Override

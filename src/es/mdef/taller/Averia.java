@@ -17,19 +17,6 @@ public class Averia implements Presupuestable, Comparable<Averia>{
 	private Boolean reparado;
 	private Turno turno;
 
-	
-	public Averia(String descripcionAveria, LocalDate localDate, Collection<RepuestoAveria> repuestos, int horas,
-			Vehiculo vehiculo) {
-		super();
-		this.id = new Identificador();
-		setDescripcion(descripcionAveria);
-		setFechaIngreso(localDate);
-		setRepuestos(repuestos);
-		setHoras(horas);
-		setVehiculo(vehiculo);
-		setReparacion(false);		
-	}
-	
 	/**
 	 * @return the id
 	 */
@@ -121,15 +108,14 @@ public class Averia implements Presupuestable, Comparable<Averia>{
 		this.turno = turno;
 	}
 
-
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "--> Averia (Turno = " + getTurno() + "): "+ "[Id=" + getId() + ", Descripcion: " + getDescripcion() + ", FechaIngreso="
-				+ getFechaIngreso() + ", Repuestos = " + getRepuestos().toString() + ", Horas-Trabajo =" + getHoras()
-				+ ", Vehículo = " + getVehiculo().toString() + "]\n";
+		return "\n--> Averia (Turno = " + getTurno() + ", ¿Reparado? " + getReparacion() + "): "+ "[Id=" + getId() + ", Descripcion: " + getDescripcion() + ", FechaIngreso="
+				+ getFechaIngreso() + "\n\tRepuestos = " + getRepuestos().toString() + "\n\tHoras-Trabajo =" + getHoras()
+				+ "\n\tVehículo = " + getVehiculo().toString() + "]\n";
 	}
 	public void agregarRepuesto (RepuestoAveria repuesto) {
 		repuestosAveria.add(repuesto);
@@ -165,11 +151,9 @@ public class Averia implements Presupuestable, Comparable<Averia>{
 	}
 	public void repararAveria() {
 		setReparacion(true);
-		Reparacion nuevaReparacion = new Reparacion(LocalDate.now());
-		nuevaReparacion.agregarAveriaReparada(this);
 		
+				
 	}
-
 	@Override
 	public int compareTo(Averia o) {
 		int comparacion = getFechaIngreso().compareTo(o.getFechaIngreso());
@@ -179,5 +163,16 @@ public class Averia implements Presupuestable, Comparable<Averia>{
 		return comparacion;
 	}
 	
-	
+	public Averia(String descripcionAveria, LocalDate localDate, Collection<RepuestoAveria> repuestos, int horas,
+			Vehiculo vehiculo) {
+		super();
+		this.id = new Identificador();
+		setDescripcion(descripcionAveria);
+		setFechaIngreso(localDate);
+		setRepuestos(repuestos);
+		setHoras(horas);
+		setVehiculo(vehiculo);
+		setReparacion(false);		
+	}
+		
 }

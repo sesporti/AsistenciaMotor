@@ -45,12 +45,17 @@ public class Almacen implements Almacenable {
 	@Override
 	public Integer solicitarRepuesto (RepuestoAveria repuesto) {
 		Integer necesidadRepuesto = 0;
+		boolean hayInventario = true;
 		for (RepuestoAlmacen repuestoAlmacen : stock) {
 			if (! hayRepuesto(repuesto) && repuestoAlmacen.getReferencia().equalsIgnoreCase(repuesto.getReferencia())) {
-				necesidadRepuesto = repuesto.getCantidad()+(repuestoAlmacen.getNivelMin()-repuestoAlmacen.getCantidad());				
+				necesidadRepuesto = repuesto.getCantidad()+(repuestoAlmacen.getNivelMin()-repuestoAlmacen.getCantidad());
+				hayInventario = true;
 			} else {
-				System.out.println("El repuesto no existe en inventario de almacen, proceder a dar de alta como repuesto de almacen.");
+				hayInventario= false;
 			}
+		}
+		if (!hayInventario) {
+			System.out.println("NO EXISTE REPUESTO = "+repuesto.getReferencia()+" en inventario de almacen: solicite la cantidad de "+ repuesto.getCantidad() + " uds.\n");
 		}
 		
 		return necesidadRepuesto;		

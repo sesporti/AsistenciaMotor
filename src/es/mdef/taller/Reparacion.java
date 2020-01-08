@@ -4,48 +4,52 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import es.mdef.interfaces.Garantizable;
 import es.mdef.interfaces.Presupuestable;
+import es.mdef.vehiculos.Vehiculo;
 
 public class Reparacion implements Presupuestable, Garantizable {
 	
 	private LocalDate fechaEntrega;
 	private ArrayList<Averia> averiasReparadas;
-		
-	public Reparacion (LocalDate fechaReparacion) {
-		this.fechaEntrega = fechaReparacion;
-		averiasReparadas = new ArrayList<>();
-	}
-	
+
 	/**
 	 * @return the fechaEntrega
 	 */
 	public LocalDate getFechaEntrega() {
 		return fechaEntrega;
 	}
-
-
 	/**
 	 * @return the averiasReparadas
 	 */
 	public ArrayList<Averia> getAveriasReparadas() {
 		return averiasReparadas;
 	}
-
-
+	public Vehiculo getVehiculoReparado() {
+		return averiasReparadas.get(0).getVehiculo();
+	}
 	@Override
 	public Double calcularPresupuesto() {
 		Double presupuestoTotal = 0.0;
-		for (Averia averia : averiasReparadas) {
-			presupuestoTotal += averia.calcularPresupuesto();
+		if (estaEnGarantia() && ! getFechaEntrega().equals(LocalDate.now())) {
+			presupuestoTotal = 0.0;
+		} else {
+			for (Averia averia : averiasReparadas) {
+				presupuestoTotal += averia.calcularPresupuesto();
+			}
 		}
-//		System.out.println("El TOTAL DE REPARACION ES: " + presupuestoTotal + " EUROS.");
+		
 		return presupuestoTotal;
 	}
 	@Override
 	public Double calcularHoras() {
 		Double horasTotal = 0.0;
-		for (Averia averia : averiasReparadas) {
-			horasTotal += horasTotal + averia.calcularHoras();
+		if (estaEnGarantia() && ! getFechaEntrega().equals(LocalDate.now())) {
+			horasTotal = 0.0;
+		} else {
+			for (Averia averia : averiasReparadas) {
+				horasTotal += averia.calcularHoras();
+			}
 		}
+		
 		return horasTotal;
 	}
 	@Override
@@ -70,8 +74,12 @@ public class Reparacion implements Presupuestable, Garantizable {
 	 */
 	@Override
 	public String toString() {
-		return "REPARACION [Fecha de Entrega=" + getFechaEntrega() + ", AVERIAS REPARADAS = " + getAveriasReparadas().toString()
-				+ ", PRESUPUESTO REPARACION = " + (calcularPresupuesto()+calcularHoras()) + " euros.]";
+		return "\n**REPARACION: Fecha de Entrega=" + getFechaEntrega() + "\n--AVERIAS REPARADAS = " + getAveriasReparadas().toString()
+				+ "\n--PRESUPUESTO REPARACION = " + (calcularPresupuesto()+calcularHoras()) + " euros.";
 	}
-
+	
+	public Reparacion (LocalDate fechaReparacion) {
+		fechaEntrega = fechaReparacion;
+		averiasReparadas = new ArrayList<Averia>();
+	}
 }

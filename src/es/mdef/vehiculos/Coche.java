@@ -72,10 +72,10 @@ public class Coche extends VehiculoConRuedas implements Arrancable, Matriculable
 		numeroDeRuedas = 4;
 	}
 
-//	@Override
-//	public int compare(Matriculable o1, Matriculable o2) {
-//		
-//		return o1.getMatricula().compareTo(o2.getMatricula());
-//	}
+	@Override
+	public int compareTo(Matriculable o1) {//, Matriculable o2) {
+		
+		return getMatricula().compareTo(o1.getMatricula());
+	}
 
 }

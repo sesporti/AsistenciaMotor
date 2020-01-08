@@ -1,16 +1,9 @@
 package es.mdef.vehiculos;
 
 //import java.util.Objects;
-//
 //import es.mdef.interfaces.Coloreable;
 
-//import java.util.Objects;
-
-//import es.mdef.interfaces.Coloreable;
-
-
-
-public class Vehiculo {//implements Coloreable{
+public class Vehiculo {// implements Coloreable {
 
 	protected String modelo;
 	String color;

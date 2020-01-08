@@ -1,7 +1,5 @@
 package es.mdef.taller;
 
-
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -121,13 +119,11 @@ public class Taller {
 			
 			HashSet<RepuestoAlmacen> repuestosAlmacen = new HashSet<>(almacen.getStock());//creo un conjunto (sin repeticiones) segun orden de inserción para repuestos de almacen
 			
-
 			String masRepuestos = "Y";
 			
 			while (masRepuestos.equalsIgnoreCase("Y")) {
 				
 //				JOptionPane.showMessageDialog(null, repuestosAlmacen.toString(), "Inventario Almacen", JOptionPane.INFORMATION_MESSAGE);//NO FUNCIONA, SI EN EL MAIN.
-			
 				
 				System.out.println(repuestosAlmacen.toString());
 				System.out.println("Elija un repuesto de la lista anterior: introduciendo referencia y cantidad necesaria (por este orden, pulsando intro con cada dato introducido)");
@@ -152,7 +148,10 @@ public class Taller {
 					getAlmacen().eliminarStock(repuestoAlmacen, repuestoNecesario.getCantidad());
 				
 				} else {
+					
 					System.out.println("SIN REPUESTO: El repuesto no existe o no hay suficiente cantidad.");
+					System.out.println("SIN STOCK, solicitar a proveedor la cantidad de:\n " + getAlmacen().solicitarRepuesto(repuestoNecesario));
+					
 					repuestoNecesario.setCantidadAsignada(- repuestoNecesario.getCantidad());
 				}
 			
@@ -164,10 +163,10 @@ public class Taller {
 			System.out.println("Introduzca horas de trabajo asociadas a la averia");
 			int horas = entradaDatos.nextInt();
 			
-			Averia averia = new Averia("Diagnostico inicial", LocalDate.now(), repuestosAveria, horas, vehiculo);//creo una averia
+			Averia averia = new Averia("Diagnostico inicial", LocalDate.now(), repuestosAveria, horas, vehiculo);//creo una averia, podría quitar la fecha como LocalDate para evitar que todas las fechas sean las del dia actual
 
-			averias.add(averia);
-			averias1.add(averia);
+			averias.add(averia);//averias del vehiculo
+			averias1.add(averia);//averias de todo el taller
 			System.out.println("Desea añadir otra averia? Y o N");
 			masAverias = entradaDatos.next();
 		}
@@ -186,6 +185,16 @@ public class Taller {
 		System.out.println("AVERIAS asociadas al Vehiculo "+ vehiculo.toString() + ":\n" + averias1.toString());
 			
 	}
+	public void repararAveria (Averia averia) {
+		if (!averia.getReparacion() && averia.getTurno()!= null) {
+			averia.repararAveria();
+			Reparacion nuevaReparacion = new Reparacion(LocalDate.now());
+			nuevaReparacion.agregarAveriaReparada(averia);
+			getRepaciones().add(nuevaReparacion);
+		} else {
+			System.out.println("No se puede reparar, sin repuestos suficientes.");
+		}
+	}
 	public void darTurno () {
 		ArrayList<Averia> averias = new ArrayList<>(getAverias());
 		averias.sort(new Comparator<Averia>() {
@@ -197,12 +206,7 @@ public class Taller {
 			}
 			
 		});
-		for (int i = 0; i < averias.size(); i++) {
-			averias.get(i).setTurno(Turno.cogerTurno(averias, almacen));
-		}
-			
-			
-		
+		Turno.cogerTurno(averias);
 	}
 	public String presupuestoInicial (Vehiculo vehiculo) {
 		Double presupuestoTotal = 0.0;
@@ -241,14 +245,51 @@ public class Taller {
 		return averiados;
 	}
 	public String mostrarReparaciones (Vehiculo vehiculo, LocalDate fechaEntrega) {
-		System.out.println("Reparaciones del vehiculo " + vehiculo.toString() + "\nFecha reparacion: " + fechaEntrega);
+		System.out.println("\n---------------Reparaciones del vehiculo " + vehiculo.toString() + "----------------------------\nFecha reparacion: " + fechaEntrega);
 		String reparados = "";
+	
 		for (Reparacion reparacion : reparaciones) {
-			reparados += reparacion.toString()+"\n";
+			if (reparacion.getVehiculoReparado().equals(vehiculo) && reparacion.getFechaEntrega().equals(fechaEntrega)) {
+				reparados += reparacion.toString()+"\n";
+			}
 		}
 		return reparados;
 	}
-	
+	public Boolean estaGarantiaReparacion (Vehiculo vehiculo, Reparacion reparacion) {
+		Boolean garantia = false;
+		for (Reparacion reparacion2 : reparaciones) {
+			if (vehiculo.equals(reparacion2.getVehiculoReparado()) && reparacion2.equals(reparacion) && reparacion.estaEnGarantia()) {
+				garantia = true;
+			}
+		}
+		return garantia;
+				
+	}
+ 	public String averiasSinRepuesto () {
+		ArrayList<Averia> averias = new ArrayList<>(getAverias());
+		
+		averias.sort(new Comparator<Averia>() {
+
+			@Override
+			public int compare(Averia o1, Averia o2) {
+				
+				return o1.compareTo(o2);
+			}
+			
+		});
+		System.out.println("-------------Averias SIN REPUESTO--------------");
+		String sinRepuesto = "";
+		for (int i = 0; i < averias.size(); i++) {
+			for (RepuestoAveria repuestoAveria : averias.get(i).getRepuestos()) {
+				if (repuestoAveria.getCantidad() < 0) {
+					sinRepuesto += averias.get(i).toString()+"\n";
+				}
+			}
+		}
+		
+		return sinRepuesto;
+	}
+
 	public Taller () {
 		this.clientes = new ArrayList<>();
 		this.averias = new ArrayList<>();

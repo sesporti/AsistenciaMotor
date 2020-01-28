@@ -6,8 +6,11 @@ import java.util.Collection;
 import es.mdef.interfaces.Presupuestable;
 import es.mdef.vehiculos.Vehiculo;
 
+// Echo en falta una interfaz Averiable
 public class Averia implements Presupuestable, Comparable<Averia>{
 	
+	// Te digo lo mismo, hazte las preguntas de que cosas sobran de abajo...
+	// vehiculo? turno? reparado? fechaIngreso?
 	private Identificador id;
 	private String descripcion;
 	private LocalDate fechaIngreso;
@@ -163,6 +166,8 @@ public class Averia implements Presupuestable, Comparable<Averia>{
 		return comparacion;
 	}
 	
+	// Esto esta mal colocado. Si usas un orden mantentlo, pero no pongas un constructor en una clase al final
+	// y el resto en otro sitio
 	public Averia(String descripcionAveria, LocalDate localDate, Collection<RepuestoAveria> repuestos, int horas,
 			Vehiculo vehiculo) {
 		super();

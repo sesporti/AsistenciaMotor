@@ -1,7 +1,18 @@
 package es.mdef.taller;
 
+// Echo en falta una interfaz PiezaRepuesto o algo asi 
 public abstract class RepuestoGeneral implements Comparable<RepuestoGeneral> {
 
+	// Tienes que dividir al minimo posible cualquier "entidad" de tu aplicacion
+	// ¿Hace falta tener un proveedor para referirme a un Repuesto?
+	// ¿El modelo tendra relacion directa con la marca?
+	// ¿Hace falta tener un precio para referirme a un Repuesto?
+	// Todo lo que sea 'NO' (es decir, las 3 preguntas) es mejor estar fuera de aqui:
+	//     Los proveedores seran de un tipo Proveedor y tendran precios para lo que vendan (Repuesto)
+	//	   Un modelo de repuesto sera de una marca
+	//	   etc... asi aprovecharas mas todo lo que hagas aunque al principio te parezca mas complicado
+	// Si algo no querias implementarlo (pej. el Proveedor) directamente no lo pongas hasta que no
+	// te haga falta.
 	protected String nombre;
 	protected String referencia;
 	protected String marca;

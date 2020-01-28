@@ -1,5 +1,6 @@
 package es.mdef.taller;
 
+// ¿Usas esta clase para algo?
 public class Trabajador extends Persona {
 	
 	private Double salario;
@@ -13,6 +14,7 @@ public class Trabajador extends Persona {
 	/**
 	 * @param salario the salario to set
 	 */
+	// ¿Usas este setter para algo?
 	protected void setSalario(Double salario) {
 		this.salario = salario;
 	}

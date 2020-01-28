@@ -15,6 +15,11 @@ public class Taller_Main {
 		/*
 		 * CREO VEHICULOS
 		 */
+		// Acostumbrate a utilizar para el tipo de la variable la mas
+		// basica que necesites. Si ves que te hace falta especializarla ya
+		// tendras tiempo de refactorizar pero pensando si de verdad es asi
+		// o estas empezando a acoplar tu componente
+		// Incluso el nombre importa
 		Coche coche = new Coche("rojo", "Ford Focus");
 		Coche coche1 = new Coche("negro", "Seat Ibiza");
 		Coche coche2 = new Coche("blanco", "Citroen DS4");
@@ -23,6 +28,8 @@ public class Taller_Main {
 		Moto moto1 = new Moto("blanco", "Kawasaki Z800");
 		Moto moto2 = new Moto("gris", "BMW 1200GS");
 		
+		// Matricula podria ser parte del constructor si ves que hace falta
+		// En este caso tiene mucho sentido por como lo usas
 		coche.setMatricula("7308GCR");
 		coche1.setMatricula("1234AAA");
 		coche2.setMatricula("5678BBB");
@@ -33,6 +40,12 @@ public class Taller_Main {
 		/*
 		 * CREO CLIENTES
 		 */
+		// Aqui sin embargo no obligaria a tener que pasar un vehiculo
+		// para tener un cliente. Asi podras usar la clase cliente en mas
+		// aplicaciones. Relacionar cliente con vehiculo/telefono o lo que
+		// sea que debe reparar tu taller debe estar fuar de cliente y
+		// lo que se averia. Asi tu diseño esta menos acoplado y te
+		// dara mas flexibilidad
 		Cliente cliente = new Cliente("Sergio", "Espejel", coche);
 		Cliente cliente1 = new Cliente("Laura", "Rodríguez", coche1);
 		Cliente cliente2 = new Cliente("Alfonso", "García", moto);
@@ -43,6 +56,9 @@ public class Taller_Main {
 		/*
 		 * AÑADO MAS VEHICULOS A LOS CLIENTES
 		 */
+		// Fijate que aqui luego añades otros vehiculos.
+		// Yo lo cambiaria para llamarlo asi:
+		//     miGestorVehiculos.getVehiculos(cliente1).add(moto2);
 		cliente.getVehiculos().add(moto2);
 		cliente1.getVehiculos().add(moto1);
 
@@ -59,7 +75,10 @@ public class Taller_Main {
 		clientes.add(cliente2);
 		clientes.add(cliente3);
 
-			
+		// Aqui si es fundamental que uses una interface en vez de directamente
+		// el ArrayList<Cliente>. El casteo es algo mejor a evitar.
+		// En tu caso me haria una List<Cliente> lista = new ArrayList<>(clientes);
+		// Aqui esta claro que no te va a fallar, pero es por coger buenas practicas
 		ArrayList<Cliente> misClientes = (ArrayList<Cliente>) clientes;
 		
 		misClientes.sort(new Comparator<Cliente>() {
@@ -76,6 +95,7 @@ public class Taller_Main {
 		 */
 		quevedo.getClientes().addAll(misClientes);
 		
+		// El toString() sobra
 		System.out.println(quevedo.getClientes().toString());// es lo mismo: System.out.println(misClientes);
 		
 
@@ -129,6 +149,7 @@ public class Taller_Main {
 		/*
 		 * AÑADO REPUESTOS A LA AVERIA, CREANDO UNA LIST DE REPUESTOS PARA CADA AVERIA.
 		 */
+		// Recuerda usar interfaces antes que implementaciones
 		ArrayList<RepuestoAveria> repuestos = new ArrayList<>();
 		
 		repuestos.add(repuestoAveria);
@@ -138,6 +159,8 @@ public class Taller_Main {
 		for (RepuestoAveria repuestoNecesario : repuestos) {
 			if (quevedo.getAlmacen().hayRepuesto(repuestoNecesario)) {
 			
+				// Aqui empieza a verse miserias de tu diseño. No parece natural esto
+				// y el dia de mañana sera un problema de mantenimiento
 				RepuestoAlmacen repuestoAlma = quevedo.getAlmacen().getRepuestoAlmacen(repuestoNecesario);//convierto el Repuesto de averia en un repuesto de almacen para poder eliminar la cantidad asignada a la averia del almacen.
 				
 				quevedo.getAlmacen().eliminarStock(repuestoAlma, repuestoNecesario.getCantidad());
@@ -158,6 +181,10 @@ public class Taller_Main {
 		
 		quevedo.getAverias().add(averia);
 		
+		// Si vas a hacer lo mismo encapsulalo. Aunque pienses que son solo pruebas
+		// las pruebas son codigo y encapsulandolo te queda todo mas limpio y puedes
+		// pasarle muchos mas casos de prueba sin tener que hacer copy&paste
+		// Refactoriza todo lo de abajo para que este en un metodo
 		/*
 		 * REALIZO LO MISMO CON MOTO2, cambiado a COCHE
 		 */
@@ -183,7 +210,6 @@ public class Taller_Main {
 		
 		quevedo.getAverias().add(averia2);
 		
-
 		/*
 		 * REALIZO LO MISMO CON COCHE 1
 		 */
@@ -246,7 +272,7 @@ public class Taller_Main {
 		
 		
 		//DOY TURNO A TODAS LAS AVERIAS DEL TALLER
-		
+		// Mejor con algo que no sea el taller como vimos con GeneradorTurno
 		quevedo.darTurno();
 		
 		
@@ -254,7 +280,10 @@ public class Taller_Main {
 		System.out.println(quevedo.mostrarAverias(moto2));
 		System.out.println(quevedo.mostrarAverias(coche1));
 		
+		// Interface...
 		ArrayList<Averia> averias = new ArrayList<>(quevedo.getAverias());
+		// Recuerda que si implementa Comparable no te hace falta definir un comparador
+		// si vas a usar la comparacion por defecto como estas haciendo. Pasas null y listo
 		averias.sort(new Comparator<Averia>() {
 
 			@Override
@@ -285,6 +314,9 @@ public class Taller_Main {
 		
 		Reparacion reparacion = new Reparacion(LocalDate.of(2018, 10, 25));
 		
+		// Se ve un poco de lio en como esta diseñado y se hacen las llamadas a las otras clases:
+		// reparacion.agregarAveriaReparada(averia) y dentro de eso llamas a averia.getReparacion()
+		// ¿No te parece redundante?
 		reparacion.agregarAveriaReparada(averia3);//no estaba reparada previamente, se repara automaticamente y se agrega a averiasReparadas
 		reparacion.agregarAveriaReparada(averia);
 		System.out.println(reparacion.getAveriasReparadas().toString());

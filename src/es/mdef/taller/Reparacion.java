@@ -53,6 +53,7 @@ public class Reparacion implements Presupuestable, Garantizable {
 		return horasTotal;
 	}
 	@Override
+	// Abusas de las clases wrapper cuando no hacen falta: usa boolean
 	public Boolean estaEnGarantia() {
 		Boolean garantia = false;
 		LocalDate fechaActual = LocalDate.now();
@@ -61,6 +62,7 @@ public class Reparacion implements Presupuestable, Garantizable {
 		}
 		return garantia;
 	}
+	// Vigila los espacios verticales
 	public void agregarAveriaReparada (Averia averiaReparada) {
 		if (averiaReparada.getReparacion()) {
 			averiasReparadas.add(averiaReparada);

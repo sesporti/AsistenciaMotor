@@ -7,7 +7,26 @@ public class Coche extends VehiculoConRuedas implements Arrancable, Matriculable
 	
 	int numeroDeRuedas;
 	String matricula;
+	
+	public Coche(String color) {
+	//	this();
+	//	setColor(color); // como ya tengo el setter lo utilizo
+		this(color, null);
+	}
 
+	public Coche(String color, String modelo) {
+	//	this(color);
+	//	this.modelo = modelo;
+		super(color, modelo);
+		numeroDeRuedas = 4;
+	}
+	
+	@Override
+	public String getMatricula() {
+		
+		return matricula;
+	}
+	
 	public void setMatricula(String matricula) {
 		this.matricula = matricula;
 	}
@@ -51,25 +70,6 @@ public class Coche extends VehiculoConRuedas implements Arrancable, Matriculable
 	public boolean arrancar() {
 		System.out.println("Arranco con la llave.");
 		return true;
-	}
-
-	@Override
-	public String getMatricula() {
-		
-		return matricula;
-	}
-	
-	public Coche(String color) {
-	//	this();
-	//	setColor(color); // como ya tengo el setter lo utilizo
-		this(color, null);
-	}
-
-	public Coche(String color, String modelo) {
-	//	this(color);
-	//	this.modelo = modelo;
-		super(color, modelo);
-		numeroDeRuedas = 4;
 	}
 
 	@Override

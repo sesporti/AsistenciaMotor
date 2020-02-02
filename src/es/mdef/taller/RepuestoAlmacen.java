@@ -6,7 +6,7 @@ package es.mdef.taller;
 // El almacen si puede tener un stock que relaciones Repuestos con sus cantidades y puedes añadir
 // mas cosas como el nivel minimo, pero a una clase que se encargue solo de eso, no mezclando
 // con otras responsabilidades
-public class RepuestoAlmacen extends RepuestoGeneral {
+public class RepuestoAlmacen extends Repuesto {
 	
 	private Integer cantidad;
 	private Integer nivelMin;

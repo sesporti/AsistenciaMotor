@@ -1,11 +1,12 @@
 package es.mdef.interfaces;
 
-public interface Presupuestable {
-	// Otra vez Double pero no se si quieres usar valores null
-	Double PRECIO_HORA = 24.50;
+public interface Presupuestable extends Facturable {
 	
-	Double calcularPresupuesto();
-	Double calcularHoras ();
-		
+	double PRECIO_HORA = 24.50;
+	
+	double calcularPresuRepuestos();
+	
+	double calcularPresuHoras ();
+			
 
 }

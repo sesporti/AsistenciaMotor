@@ -8,15 +8,15 @@ public class Moto extends VehiculoConRuedas implements Arrancable, Matriculable 
 	Object[] ruedas = new Object[2];
 	String matricula;
 	
+	public Moto(String color, String modelo) {
+		super(color, modelo);
+	}
+
 	@Override
 	public int getNumeroDeRuedas() {
 		return ruedas.length;
 	}
 	
-	public Moto(String color, String modelo) {
-		super(color, modelo);
-	}
-
 	@Override
 	public String toString() {
 		return "MOTO: " + super.toString() +" - "+ mostrarMatricula();
@@ -27,7 +27,6 @@ public class Moto extends VehiculoConRuedas implements Arrancable, Matriculable 
 		
 		return matricula;
 	}
-	
 
 	/**
 	 * @param matricula the matricula to set

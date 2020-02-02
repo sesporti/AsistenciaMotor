@@ -1,20 +1,26 @@
 package es.mdef.taller;
 
-// ¿Usas esta clase para algo?
+// ¿Usas esta clase para algo? Solo si se quiere utilizar en clase Taller, para llevar un control de empleados.
 public class Trabajador extends Persona {
 	
-	private Double salario;
+	private double salario;
 	private String especialidad;
+	
+	public Trabajador(String nombre, String apellidos, String especialidad, double salario) {
+		super(nombre, apellidos);
+		setEspecialidad(especialidad);
+		setSalario(salario);
+	}
+	
 	/**
 	 * @return the salario
 	 */
-	public Double getSalario() {
+	public double getSalario() {
 		return salario;
 	}
 	/**
 	 * @param salario the salario to set
 	 */
-	// ¿Usas este setter para algo?
 	protected void setSalario(Double salario) {
 		this.salario = salario;
 	}
@@ -37,10 +43,7 @@ public class Trabajador extends Persona {
 	public String toString() {
 		return super.toString() + ", especialidad: " + getEspecialidad() + ", cobra un salario de " + getSalario() + " euros";
 	}
-	public Trabajador(String nombre, String apellidos, String especialidad) {
-		super(nombre, apellidos);
-		setEspecialidad(especialidad);
-	}
+
 	
 	
 

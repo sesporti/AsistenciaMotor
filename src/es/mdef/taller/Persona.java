@@ -7,6 +7,14 @@ public class Persona implements Comparable<Persona>{
 	private String direccion;
 	private String telefono;
 	
+	public Persona(String nombre, String apellidos) {
+		super();
+		setNombre(nombre);
+		setApellidos(apellidos);
+		setDireccion("SIN DEFINIR");
+		setTelefono("SIN DEFINIR");
+	}
+	
 	/**
 	 * @return the nombre
 	 */
@@ -99,13 +107,6 @@ public class Persona implements Comparable<Persona>{
 				+ getDireccion() + ", (Teléfono: " + getTelefono() + ")";
 	}
 
-	public Persona(String nombre, String apellidos) {
-		super();
-		setNombre(nombre);
-		setApellidos(apellidos);
-		setDireccion("SIN DEFINIR");
-		setTelefono("SIN DEFINIR");
-	}
 	@Override
 	public int compareTo(Persona o) {
 		

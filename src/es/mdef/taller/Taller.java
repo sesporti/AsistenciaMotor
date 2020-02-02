@@ -117,7 +117,7 @@ public class Taller {
 		while (masAverias.equalsIgnoreCase("Y")) {
 			ArrayList<RepuestoAveria> repuestosAveria = new ArrayList<>();//creo arraylist de repuestos para incluir todos los repuestos asociados a la averia.
 			
-			HashSet<RepuestoAlmacen> repuestosAlmacen = new HashSet<>(almacen.getStock());//creo un conjunto (sin repeticiones) segun orden de inserción para repuestos de almacen
+			HashSet<RepuestoAlmacen> repuestosAlmacen = new HashSet<>(almacen.getArticulos());//creo un conjunto (sin repeticiones) segun orden de inserción para repuestos de almacen
 			
 			String masRepuestos = "Y";
 			
@@ -143,7 +143,7 @@ public class Taller {
 					
 					repuestosAveria.add(repuestoNecesario);
 					
-					RepuestoAlmacen repuestoAlmacen = getAlmacen().getRepuestoAlmacen(repuestoNecesario);//convierto el Repuesto de averia en un repuesto de almacen para poder eliminar la cantidad asignada a la averia del almacen.
+					RepuestoAlmacen repuestoAlmacen = getAlmacen().getArticuloAlmacen(repuestoNecesario);//convierto el Repuesto de averia en un repuesto de almacen para poder eliminar la cantidad asignada a la averia del almacen.
 					
 					getAlmacen().eliminarStock(repuestoAlmacen, repuestoNecesario.getCantidad());
 				
@@ -215,7 +215,7 @@ public class Taller {
 		for (Averia averia : averias) {
 			if (averia.getVehiculo().equals(vehiculo) && averia.getReparacion().equals(false)) {
 				presupuestoTotal+= averia.calcularPresupuesto();
-				calculohorasTotal += averia.calcularHoras();
+				calculohorasTotal += averia.calcularPresuHoras();
 				tiempo +=averia.getHoras();
 			}			
 		}

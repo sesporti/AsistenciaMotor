@@ -2,7 +2,7 @@ package es.mdef.taller;
 
 // Veo que sigues mezclando responsabilidades
 // ¿Por que no poner esto en una clase Reparacion?
-public class RepuestoAveria extends RepuestoGeneral {
+public class RepuestoAveria extends Repuesto {
 	
 	private Integer cantidadAsignada;
 	

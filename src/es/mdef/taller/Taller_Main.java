@@ -28,7 +28,7 @@ public class Taller_Main {
 		almacen.agregarStock(repuesto, 20);
 		almacen.agregarStock(repuesto3, 20);
 		almacen.eliminarStock(repuesto, 10);
-		
+				
 		System.out.println(almacen.toString());
 		
 		

@@ -4,9 +4,8 @@ import java.time.LocalDate;
 import java.util.Map;
 
 import es.mdef.taller.Identificador;
-import es.mdef.taller.Repuesto;
 
-public interface Averiable extends Presupuestable {
+public interface Averiable<T> extends Presupuestable, Comparable<Averiable<T>> {
 	
 	Identificador getIdAveria();
 	
@@ -14,12 +13,22 @@ public interface Averiable extends Presupuestable {
 	
 	LocalDate getFechaAveria();
 	
-	Map<Repuesto, Integer> getRepuestoCantidad();
+	Map<T, Integer> getRepuestosAveria();
 	
-	boolean agregarRepuestoCantidad();
+	boolean agregarRepuestoAveria(T piezaRepuesto, int cantidad);
 	
-	boolean eliminarRepuestoCantidad();
+	boolean eliminarRepuestoAveria(T piezaRepuesto, int cantidad);
 	
-	String presupuestarAveriable();
+	default int compareTo(Averiable<T> o) {
+		if (getFechaAveria().isBefore(o.getFechaAveria())) {
+			return -1;
+		} else if (getFechaAveria().equals(o.getFechaAveria())) {
+			return 0;
+		} else {
+			return 1;
+		}
+		
+	}
+
 
 }

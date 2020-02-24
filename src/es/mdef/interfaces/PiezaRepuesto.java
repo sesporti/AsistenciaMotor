@@ -9,7 +9,7 @@ public interface PiezaRepuesto<T> extends Comparable<PiezaRepuesto<T>>{
 	String getNombre();
 
 	/**
-	 * @return the referencia
+	 * @return the referencia, cualquier tipo de referencia.
 	 */
 	T getReferencia();
 

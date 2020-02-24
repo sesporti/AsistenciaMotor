@@ -4,17 +4,20 @@ package es.mdef.interfaces;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface Reparable extends Garantizable, Presupuestable {//comparable para comparar horas
+
+public interface Reparable<T> extends Garantizable, Presupuestable, Comparable<Reparable<T>> {//comparable para comparar horas
 	
 	LocalDate fechaEntrega();
 	
-	List<Averiable> getAverias();
+	List<T> getReparables();
 	
 	int getHorasReparacion();
 	
-	boolean repararAveriable();
+	boolean reparar();
 	
-	double presupuestarReparable();
+	default int compareTo (Reparable<T> reparable) {
+		return getHorasReparacion() - reparable.getHorasReparacion();		
+	}
 	
 	
 

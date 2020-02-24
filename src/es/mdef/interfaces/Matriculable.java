@@ -7,7 +7,7 @@ public interface Matriculable extends Comparable<Matriculable>{
 	public String getMatricula ();
 	
 	default String mostrarMatricula () {
-		return "Matrícula = " + getMatricula();
+		return "Matrícula : " + getMatricula();
 	}
 	@Override
 	default int compareTo(Matriculable o) {

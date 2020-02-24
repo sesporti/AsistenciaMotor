@@ -7,6 +7,8 @@ public interface Presupuestable extends Facturable {
 	double calcularPresuRepuestos();
 	
 	double calcularPresuHoras ();
+	
+	double calcularPresuTotal();
 			
 
 }

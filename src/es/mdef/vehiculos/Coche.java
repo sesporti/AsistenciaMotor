@@ -11,15 +11,15 @@ public class Coche extends VehiculoConRuedas implements Arrancable, Matriculable
 	public Coche(String color) {
 	//	this();
 	//	setColor(color); // como ya tengo el setter lo utilizo
-		this(color, null);
+		this(color, null, null);
 	}
 
-	public Coche(String color, String modelo) {
+	public Coche(String color, String modelo, String matricula) {
 	//	this(color);
 	//	this.modelo = modelo;
 		super(color, modelo);
 		numeroDeRuedas = 4;
-	}
+		setMatricula(matricula);	}
 	
 	@Override
 	public String getMatricula() {
@@ -27,7 +27,7 @@ public class Coche extends VehiculoConRuedas implements Arrancable, Matriculable
 		return matricula;
 	}
 	
-	public void setMatricula(String matricula) {
+	private void setMatricula(String matricula) {
 		this.matricula = matricula;
 	}
 	

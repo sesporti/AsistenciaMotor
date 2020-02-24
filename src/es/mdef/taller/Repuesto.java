@@ -7,7 +7,7 @@ import es.mdef.interfaces.PiezaRepuesto;
 public class Repuesto implements Coste, PiezaRepuesto<String> {
 
 	private String nombre;
-	private String referencia;
+	private String referencia;//se podría haber creado un tipo referencia con numeros y letras (identificando el proveedor con letra y con numero secuencial de referencia del proveedor.
 	private String marca;
 	private double precio;
 
@@ -63,6 +63,7 @@ public class Repuesto implements Coste, PiezaRepuesto<String> {
 
 	/* (non-Javadoc)
 	 * @see es.mdef.taller.PiezaRepuesto#compareTo(es.mdef.taller.Repuesto)
+	 * Comparable por la referencia del repuesto
 	 */
 	@Override
 	public int compareTo(PiezaRepuesto<String> o) {

@@ -8,8 +8,9 @@ public class Moto extends VehiculoConRuedas implements Arrancable, Matriculable 
 	Object[] ruedas = new Object[2];
 	String matricula;
 	
-	public Moto(String color, String modelo) {
+	public Moto(String color, String modelo, String matricula) {
 		super(color, modelo);
+		this.matricula = matricula;
 	}
 
 	@Override

@@ -15,6 +15,7 @@ public class Vehiculo {// implements Coloreable {
 	 * @param color para pintar
 	 * @return vehiculo si se pinta o null si ya tiene el mismo color
 	 */
+//	NO IMPLEMENTADO ESTE METODO PORQUE NO PODRÍA COMPARAR POR MATRICULA LOS VEHICULOS, SI SE IMPLEMENTA COMPARA POR COLOR.	
 //	public static Coloreable pintarVehiculo(Vehiculo vehiculo, String color) {
 //		Coloreable vehiculoAux = null;
 //		if(!Objects.equals(vehiculo.getColor().toUpperCase(), color.toUpperCase())) {
@@ -33,7 +34,7 @@ public class Vehiculo {// implements Coloreable {
 		return color;
 	}
 
-	public void setColor(String color) {
+	private void setColor(String color) {
 		this.color = color;
 	}
 	
@@ -54,7 +55,7 @@ public class Vehiculo {// implements Coloreable {
 
 	@Override
 	public String toString() {
-		return modelo + " (" + getColor().toUpperCase() + ")";
+		return getModelo() + " (" + getColor().toUpperCase() + ")";
 	}
 
 

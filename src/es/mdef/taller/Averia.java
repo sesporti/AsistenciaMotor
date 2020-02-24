@@ -1,262 +1,171 @@
 package es.mdef.taller;
 
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import es.mdef.interfaces.Averiable;
+import es.mdef.interfaces.PiezaRepuesto;
 import es.mdef.vehiculos.Vehiculo;
 
-// Echo en falta una interfaz Averiable
-public class Averia<T> implements Averiable {
-	
-	private Identificador id;
-	private String nombre;
-	private LocalDate fecha;
-	private Map<Repuesto, Integer> repuestos;
-	private T objetoAveriado;
-	
-	
-		
-	/**
-	 * @return the objetoAveriado
-	 */
-	public T getObjetoAveriado() {
-		return objetoAveriado;
-	}
 
-	@Override
-	public double calcularPresuRepuestos() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+public class Averia<T> implements Averiable<Repuesto> {
 
-	@Override
-	public double calcularPresuHoras() {
-		// TODO Auto-generated method stub
-		return 0;
+	private Identificador identificador;
+	private String nombreAveria;
+	private LocalDate fechaAveria;
+	private Map<Repuesto, Integer> repuestosAveria;
+	private Vehiculo vehiculo;
+	private double horasEstimadas;
+	
+	
+	public Averia (String nombreAveria, LocalDate fechaAveria, Vehiculo vehiculo, double horas){
+		identificador = new Identificador();
+		this.nombreAveria = nombreAveria;
+		this.fechaAveria = fechaAveria;
+		repuestosAveria = new TreeMap<Repuesto, Integer>();
+		this.vehiculo = vehiculo;
+		horasEstimadas = horas;
 	}
 	
-	@Override
-	public String presupuestarAveriable() {
-		// TODO Auto-generated method stub
-		return null;
+	public Averia (LocalDate fechaAveria, Vehiculo vehiculo, double horas){
+		this("Sin definir", fechaAveria, vehiculo, horas);
 	}
+	
+
 	@Override
 	public Identificador getIdAveria() {
 		
-		return id;
+		return identificador;
 	}
 
 	@Override
 	public String getNombreAveria() {
 		
-		return nombre;
+		return nombreAveria;
 	}
 
 	@Override
 	public LocalDate getFechaAveria() {
 		
-		return fecha;
+		return fechaAveria;
 	}
 
 	@Override
-	public Map<Repuesto, Integer> getRepuestoCantidad() {
+	public Map<Repuesto, Integer> getRepuestosAveria() {
 		
-		return repuestos;
+		return repuestosAveria;
+	}
+	
+	/**
+	 * @return the vehiculo
+	 */
+	public Vehiculo getVehiculo() {
+		return vehiculo;
+	}
+
+	/**
+	 * @return the horasEstimadas
+	 */
+	public double getHorasEstimadas() {
+		return horasEstimadas;
 	}
 
 	@Override
-	public boolean agregarRepuestoCantidad() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean agregarRepuestoAveria(Repuesto repuesto, int cantidad) {
+		boolean agregado = false;
+		if (getRepuestosAveria().containsKey(repuesto)) {
+			getRepuestosAveria().put(repuesto, getRepuestosAveria().get(repuesto) + cantidad);
+			agregado = true;
+		} else {
+			getRepuestosAveria().putIfAbsent(repuesto, cantidad);
+			agregado = true;
+		}
+		
+		return agregado;
 	}
 
 	@Override
-	public boolean eliminarRepuestoCantidad() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean eliminarRepuestoAveria(Repuesto repuesto, int cantidad) {
+		boolean eliminado = false;
+		if (getRepuestosAveria().containsKey(repuesto)) {
+			getRepuestosAveria().put(repuesto, getRepuestosAveria().get(repuesto) - cantidad);
+			eliminado = true;
+		} else {
+			
+			System.out.println("Error: El repuesto no esta añadido a la avería.");
+		}
+		
+		return eliminado;
+	}
+	
+	/**
+	 * @param repuesto
+	 * @return true, si se realiza la eliminacion del total del repuesto.
+	 */
+	public boolean eliminarTotalRepuestoAveria(PiezaRepuesto<T> repuesto) {
+				
+		return getRepuestosAveria().remove(repuesto, getRepuestosAveria().get(repuesto));
+	}
+	
+	public String informeRepuestos() {
+		
+		String informe ="";
+		
+		Map<Repuesto, Integer> hMap = new TreeMap<>(getRepuestosAveria());
+		Iterator<Entry<Repuesto, Integer>> iterator = hMap.entrySet().iterator();
+		
+		while (iterator.hasNext()) {
+			Map.Entry<Repuesto, Integer> entry = (Entry<Repuesto, Integer>) iterator.next();
+			informe += entry.getKey().toString() + ", cantidad = " + entry.getValue() + "\n";	
+		}
+		
+		return informe;
+		
+	}
+	
+	@Override
+	public double calcularPresuRepuestos() {
+		double presuRepuestos = 0;
+		
+		Map<Repuesto, Integer> hMap = new TreeMap<>(getRepuestosAveria());
+		Iterator<Entry<Repuesto, Integer>> iterator = hMap.entrySet().iterator();
+		
+		while (iterator.hasNext()) {
+			Map.Entry<Repuesto, Integer> entry = (Entry<Repuesto, Integer>) iterator.next();
+			presuRepuestos += entry.getKey().getPrecio() * entry.getValue();	
+		}
+		
+		return presuRepuestos;
 	}
 
+	@Override
+	public double calcularPresuHoras() {
+			
+		return PRECIO_HORA * getHorasEstimadas();
+	}
 
+	@Override
+	public double calcularPresuTotal() {
+		
+		return (calcularPresuRepuestos() + calcularPresuHoras()) ;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Averia (" + getIdAveria() + "), Descripcion averia: " + getNombreAveria()
+				+ ", FechaAveria(" + getFechaAveria() + "), Vehiculo: " + getVehiculo().toString()
+				+ ", HorasEstimadas = " + getHorasEstimadas() + "\nInforme Repuestos:" + informeRepuestos()
+				+ "\nTotal de Repuestos = " + calcularPresuRepuestos() + " €.\nTotal de Mano Obra = "
+				+ calcularPresuHoras() + " €.\nTOTAL PRESUPUESTO = " + calcularPresuTotal() + " €.";
+	}
 	
 	
 	
-	
-	
-	
-	
-	
-	
-//	// Te digo lo mismo, hazte las preguntas de que cosas sobran de abajo...
-//	// vehiculo? turno? reparado? fechaIngreso?
-//	private Identificador id;
-//	private String descripcion;
-//	private LocalDate fechaIngreso;
-//	private Collection<RepuestoAveria> repuestosAveria;
-//	private Integer horas;
-//	private Vehiculo vehiculo;
-//	private Boolean reparado;
-//	private Turno turno;
-//
-//	/**
-//	 * @return the id
-//	 */
-//	public Integer getId() {
-//		return id.getIdentificador();
-//	}
-//	/**
-//	 * @return the nombre
-//	 */
-//	public String getDescripcion() {
-//		return descripcion;
-//	}
-//	/**
-//	 * @param nombre the nombre to set
-//	 */
-//	public void setDescripcion(String nombre) {
-//		this.descripcion = nombre;
-//	}
-//	/**
-//	 * @return the fechaIngreso
-//	 */
-//	public LocalDate getFechaIngreso() {
-//		return fechaIngreso;
-//	}
-//	/**
-//	 * @param localDate the fechaIngreso to set
-//	 */
-//	private void setFechaIngreso(LocalDate localDate) {
-//		this.fechaIngreso = localDate;
-//	}
-//	/**
-//	 * @return the repuestos
-//	 */
-//	public Collection<RepuestoAveria> getRepuestos() {
-//		return repuestosAveria;
-//	}
-//	/**
-//	 * @param repuestos the repuestos to set
-//	 */
-//	private void setRepuestos(Collection<RepuestoAveria> repuestos) {
-//		this.repuestosAveria = repuestos;
-//	}
-//	/**
-//	 * @return the horas
-//	 */
-//	public Integer getHoras() {
-//		return horas;
-//	}
-//	/**
-//	 * @param horas the horas to set
-//	 */
-//	private void setHoras(Integer horas) {
-//		this.horas = horas;
-//	}
-//	/**
-//	 * @return the vehiculo
-//	 */
-//	public Vehiculo getVehiculo() {
-//		return vehiculo;
-//	}
-//	/**
-//	 * @param vehiculo the vehiculo to set
-//	 */
-//	private void setVehiculo(Vehiculo vehiculo) {
-//		this.vehiculo = vehiculo;
-//	}
-//	/**
-//	 * @return the reparacion
-//	 */
-//	public Boolean getReparacion() {
-//		return reparado;
-//	}
-//	/**
-//	 * @param reparacion the reparacion to set
-//	 */
-//	void setReparacion(Boolean reparacion) {
-//		this.reparado = reparacion;
-//	}
-//	/**
-//	 * @return the turno
-//	 */
-//	public Turno getTurno() {
-//		return turno;
-//	}
-//	/**
-//	 * @param turno the turno to set
-//	 */
-//	public void setTurno(Turno turno) {
-//		this.turno = turno;
-//	}
-//
-//	/* (non-Javadoc)
-//	 * @see java.lang.Object#toString()
-//	 */
-//	@Override
-//	public String toString() {
-//		return "\n--> Averia (Turno = " + getTurno() + ", ¿Reparado? " + getReparacion() + "): "+ "[Id=" + getId() + ", Descripcion: " + getDescripcion() + ", FechaIngreso="
-//				+ getFechaIngreso() + "\n\tRepuestos = " + getRepuestos().toString() + "\n\tHoras-Trabajo =" + getHoras()
-//				+ "\n\tVehículo = " + getVehiculo().toString() + "]\n";
-//	}
-//	public void agregarRepuesto (RepuestoAveria repuesto) {
-//		repuestosAveria.add(repuesto);
-//		
-//	}
-//	public void eliminarRepuesto (RepuestoAveria repuesto) {
-//		for (RepuestoAveria repuesto2 : repuestosAveria) {
-//			if (repuesto2.equals(repuesto)) {
-//				repuestosAveria.remove(repuesto);
-//			}
-//		}
-//	}
-//	@Override
-//	public double calcularPresupuesto () {
-//		double presupuesto = 0.0;
-//		for (RepuestoAveria repuesto : repuestosAveria) {
-//			if (repuesto.getCantidad() != null && repuesto.getPrecio() != null) {
-////				System.out.println("\nPresupuesto Repuesto:" + repuesto.getReferencia() + " X " + repuesto.getCantidad() + " = " + (repuesto.getPrecio() * repuesto.getCantidad()) + " euros.");
-//				presupuesto += repuesto.getPrecio()*repuesto.getCantidad();
-//			} else {
-//				presupuesto += 0.0;
-//				System.out.println("Hay algun campo (precio o cantidad) del repuesto " + repuesto.getReferencia() + "igual a null");
-//			}
-////			System.out.println("Total Repuestos = " + presupuesto + ", + Total Mano de Obra = " + horas + " X " + PRECIO_HORA + " = " + calcularHoras() + " euros.\n"
-////					+ "TOTAL PRESUPUESTO AVERIA = " + getDescripcion()+" ("+getId() + "), " + (presupuesto + calcularHoras()) + " euros.");
-//		}
-//				
-//		return presupuesto;
-//	}
-//	@Override
-//	public double calcularPresuHoras() {
-//		return this.horas * PRECIO_HORA;
-//	}
-//	public void repararAveria() {
-//		setReparacion(true);
-//		
-//				
-//	}
-//	@Override
-//	public int compareTo(Averia o) {
-//		int comparacion = getFechaIngreso().compareTo(o.getFechaIngreso());
-//		if (comparacion == 0) {
-//			comparacion = getHoras().compareTo(o.getHoras());
-//		}
-//		return comparacion;
-//	}
-//	
-//	// Esto esta mal colocado. Si usas un orden mantentlo, pero no pongas un constructor en una clase al final
-//	// y el resto en otro sitio
-//	public Averia(String descripcionAveria, LocalDate localDate, Collection<RepuestoAveria> repuestos, int horas,
-//			Vehiculo vehiculo) {
-//		super();
-//		this.id = new Identificador();
-//		setDescripcion(descripcionAveria);
-//		setFechaIngreso(localDate);
-//		setRepuestos(repuestos);
-//		setHoras(horas);
-//		setVehiculo(vehiculo);
-//		setReparacion(false);		
-//	}
 		
 }

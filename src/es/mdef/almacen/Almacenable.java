@@ -1,4 +1,4 @@
-package es.mdef.interfaces;
+package es.mdef.almacen;
 
 public interface Almacenable<T> {
 	

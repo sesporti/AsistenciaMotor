@@ -3,6 +3,8 @@ package es.mdef.taller;
 import java.util.ArrayList;
 //import java.util.Comparator;
 
+import es.mdef.averia.Averia;
+
 public class Turno {
 
 	private static Turno turnoActual = new Turno(1);

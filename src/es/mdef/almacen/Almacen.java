@@ -1,11 +1,9 @@
-package es.mdef.taller;
+package es.mdef.almacen;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
-
-import es.mdef.interfaces.Almacenable;
 
 public class Almacen<T> implements Almacenable<T> {
 	

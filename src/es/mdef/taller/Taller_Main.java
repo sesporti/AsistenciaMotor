@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 
-import es.mdef.interfaces.PiezaRepuesto;
+import es.mdef.almacen.Almacen;
+import es.mdef.repuestos.PiezaRepuesto;
+import es.mdef.repuestos.Repuesto;
 import es.mdef.vehiculos.Coche;
 import es.mdef.vehiculos.Moto;
 
@@ -16,10 +18,10 @@ public class Taller_Main {
 		
 		Almacen<PiezaRepuesto<String>> almacen = new Almacen<>();
 		
-		Repuesto repuesto = new Repuesto("Correa distribución", "2", "Bosch", 125.99);
-		PiezaRepuesto<String> repuesto2 = new Repuesto("Luna delantera", "1", "Carglass", 250);
-		PiezaRepuesto<String> repuesto3 = new Repuesto("Brida sujeccion turbo", "4", "Stockholme", 10);
-		PiezaRepuesto<String> repuesto4 = new Repuesto("Motor elevalunas", "3", "Eleva", 55);
+		Repuesto<String> repuesto = new Repuesto<String>("Correa distribución", "2", "Bosch", 125.99);
+		PiezaRepuesto<String> repuesto2 = new Repuesto<String>("Luna delantera", "1", "Carglass", 250);
+		PiezaRepuesto<String> repuesto3 = new Repuesto<String>("Brida sujeccion turbo", "4", "Stockholme", 10);
+		PiezaRepuesto<String> repuesto4 = new Repuesto<String>("Motor elevalunas", "3", "Eleva", 55);
 		
 		almacen.agregarStock(repuesto, 20);
 		almacen.agregarStock(repuesto2, 58);

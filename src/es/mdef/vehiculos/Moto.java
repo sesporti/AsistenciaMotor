@@ -1,8 +1,5 @@
 package es.mdef.vehiculos;
 
-import es.mdef.interfaces.Arrancable;
-import es.mdef.interfaces.Matriculable;
-
 public class Moto extends VehiculoConRuedas implements Arrancable, Matriculable {
 
 	Object[] ruedas = new Object[2];

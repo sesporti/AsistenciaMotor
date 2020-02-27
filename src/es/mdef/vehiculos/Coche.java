@@ -1,8 +1,5 @@
 package es.mdef.vehiculos;
 
-import es.mdef.interfaces.Arrancable;
-import es.mdef.interfaces.Matriculable;
-
 public class Coche extends VehiculoConRuedas implements Arrancable, Matriculable {
 	
 	int numeroDeRuedas;

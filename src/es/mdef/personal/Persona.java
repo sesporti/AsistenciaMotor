@@ -1,4 +1,4 @@
-package es.mdef.taller;
+package es.mdef.personal;
 
 public class Persona implements Comparable<Persona>{
 	

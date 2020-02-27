@@ -1,4 +1,4 @@
-package es.mdef.interfaces;
+package es.mdef.vehiculos;
 
 public interface Arrancable {
 

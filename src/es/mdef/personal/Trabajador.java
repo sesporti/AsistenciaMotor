@@ -1,4 +1,4 @@
-package es.mdef.taller;
+package es.mdef.personal;
 
 // ¿Usas esta clase para algo? Solo si se quiere utilizar en clase Taller, para llevar un control de empleados.
 public class Trabajador extends Persona {

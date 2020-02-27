@@ -7,6 +7,11 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Scanner;
 
+import es.mdef.almacen.Almacen;
+import es.mdef.averia.Averia;
+import es.mdef.personal.Cliente;
+import es.mdef.reparaciones.Reparacion;
+import es.mdef.repuestos.Nivelable;
 import es.mdef.vehiculos.Vehiculo;
 
 public class Taller {
@@ -143,7 +148,7 @@ public class Taller {
 					
 					repuestosAveria.add(repuestoNecesario);
 					
-					RepuestoAlmacen repuestoAlmacen = getAlmacen().getArticuloAlmacen(repuestoNecesario);//convierto el Repuesto de averia en un repuesto de almacen para poder eliminar la cantidad asignada a la averia del almacen.
+					Nivelable repuestoAlmacen = getAlmacen().getArticuloAlmacen(repuestoNecesario);//convierto el Repuesto de averia en un repuesto de almacen para poder eliminar la cantidad asignada a la averia del almacen.
 					
 					getAlmacen().eliminarStock(repuestoAlmacen, repuestoNecesario.getCantidad());
 				

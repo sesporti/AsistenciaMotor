@@ -1,7 +1,7 @@
-package es.mdef.interfaces;
+package es.mdef.repuestos;
 
 
-public interface PiezaRepuesto<T> extends Comparable<PiezaRepuesto<T>>{
+public interface PiezaRepuesto<T> {//extends Comparable<PiezaRepuesto<T>>{
 
 	/**
 	 * @return the nombre
@@ -23,6 +23,6 @@ public interface PiezaRepuesto<T> extends Comparable<PiezaRepuesto<T>>{
 	 */
 	String toString();
 
-	int compareTo(PiezaRepuesto<T> o);
+	//int compareTo(PiezaRepuesto<T> o);
 
 }

@@ -1,11 +1,9 @@
-package es.mdef.interfaces;
+package es.mdef.averia;
 
 import java.time.LocalDate;
 import java.util.Map;
 
-import es.mdef.taller.Identificador;
-
-public interface Averiable<T> extends Presupuestable, Comparable<Averiable<T>> {
+public interface Averiable<T> extends Presupuestable, Comparable<Averiable<T>> {//Comparable para ordenar por fecha de entrada averia
 	
 	Identificador getIdAveria();
 	
@@ -19,6 +17,8 @@ public interface Averiable<T> extends Presupuestable, Comparable<Averiable<T>> {
 	
 	boolean eliminarRepuestoAveria(T piezaRepuesto, int cantidad);
 	
+	String informeRepuestos();	
+	
 	default int compareTo(Averiable<T> o) {
 		if (getFechaAveria().isBefore(o.getFechaAveria())) {
 			return -1;
@@ -29,6 +29,5 @@ public interface Averiable<T> extends Presupuestable, Comparable<Averiable<T>> {
 		}
 		
 	}
-
 
 }

@@ -1,4 +1,4 @@
-package es.mdef.taller;
+package es.mdef.reparaciones;
 
 import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDate;
@@ -10,12 +10,12 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import es.mdef.interfaces.Averiable;
-import es.mdef.interfaces.Facturable;
-import es.mdef.interfaces.Garantizable;
-import es.mdef.interfaces.PiezaRepuesto;
-import es.mdef.interfaces.Presupuestable;
-import es.mdef.interfaces.Reparable;
+import es.mdef.averia.Averiable;
+import es.mdef.averia.Facturable;
+import es.mdef.averia.Identificador;
+import es.mdef.averia.Presupuestable;
+import es.mdef.repuestos.PiezaRepuesto;
+import es.mdef.repuestos.Repuesto;
 import es.mdef.vehiculos.Vehiculo;
 
 public class Reparacion implements Facturable, Reparable, Averiable, Comparable<Reparacion>{

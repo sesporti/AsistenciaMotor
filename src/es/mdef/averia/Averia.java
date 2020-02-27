@@ -1,4 +1,4 @@
-package es.mdef.taller;
+package es.mdef.averia;
 
 import java.time.LocalDate;
 import java.util.Iterator;
@@ -6,17 +6,17 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import es.mdef.interfaces.Averiable;
-import es.mdef.interfaces.PiezaRepuesto;
+import es.mdef.repuestos.PiezaRepuesto;
+import es.mdef.repuestos.Repuesto;
 import es.mdef.vehiculos.Vehiculo;
 
 
-public class Averia<T> implements Averiable<Repuesto> {
+public class Averia<T, K> implements Averiable<Repuesto<K>> {
 
 	private Identificador identificador;
 	private String nombreAveria;
 	private LocalDate fechaAveria;
-	private Map<Repuesto, Integer> repuestosAveria;
+	private Map<Repuesto<K>, Integer> repuestosAveria;
 	private Vehiculo vehiculo;
 	private double horasEstimadas;
 	
@@ -25,7 +25,7 @@ public class Averia<T> implements Averiable<Repuesto> {
 		identificador = new Identificador();
 		this.nombreAveria = nombreAveria;
 		this.fechaAveria = fechaAveria;
-		repuestosAveria = new TreeMap<Repuesto, Integer>();
+		repuestosAveria = new TreeMap<Repuesto<K>, Integer>();
 		this.vehiculo = vehiculo;
 		horasEstimadas = horas;
 	}
@@ -54,7 +54,7 @@ public class Averia<T> implements Averiable<Repuesto> {
 	}
 
 	@Override
-	public Map<Repuesto, Integer> getRepuestosAveria() {
+	public Map<Repuesto<K>, Integer> getRepuestosAveria() {
 		
 		return repuestosAveria;
 	}
@@ -74,7 +74,7 @@ public class Averia<T> implements Averiable<Repuesto> {
 	}
 
 	@Override
-	public boolean agregarRepuestoAveria(Repuesto repuesto, int cantidad) {
+	public boolean agregarRepuestoAveria(Repuesto<K> repuesto, int cantidad) {
 		boolean agregado = false;
 		if (getRepuestosAveria().containsKey(repuesto)) {
 			getRepuestosAveria().put(repuesto, getRepuestosAveria().get(repuesto) + cantidad);
@@ -88,7 +88,7 @@ public class Averia<T> implements Averiable<Repuesto> {
 	}
 
 	@Override
-	public boolean eliminarRepuestoAveria(Repuesto repuesto, int cantidad) {
+	public boolean eliminarRepuestoAveria(Repuesto<K> repuesto, int cantidad) {
 		boolean eliminado = false;
 		if (getRepuestosAveria().containsKey(repuesto)) {
 			getRepuestosAveria().put(repuesto, getRepuestosAveria().get(repuesto) - cantidad);
@@ -110,15 +110,19 @@ public class Averia<T> implements Averiable<Repuesto> {
 		return getRepuestosAveria().remove(repuesto, getRepuestosAveria().get(repuesto));
 	}
 	
+	/* (non-Javadoc)
+	 * @see es.mdef.taller.Averiable#informeRepuestos()
+	 */
+	@Override
 	public String informeRepuestos() {
 		
 		String informe ="";
 		
-		Map<Repuesto, Integer> hMap = new TreeMap<>(getRepuestosAveria());
-		Iterator<Entry<Repuesto, Integer>> iterator = hMap.entrySet().iterator();
+		Map<Repuesto<K>, Integer> hMap = new TreeMap<>(getRepuestosAveria());
+		Iterator<Entry<Repuesto<K>, Integer>> iterator = hMap.entrySet().iterator();
 		
 		while (iterator.hasNext()) {
-			Map.Entry<Repuesto, Integer> entry = (Entry<Repuesto, Integer>) iterator.next();
+			Map.Entry<Repuesto<K>, Integer> entry = (Entry<Repuesto<K>, Integer>) iterator.next();
 			informe += entry.getKey().toString() + ", cantidad = " + entry.getValue() + "\n";	
 		}
 		
@@ -130,11 +134,11 @@ public class Averia<T> implements Averiable<Repuesto> {
 	public double calcularPresuRepuestos() {
 		double presuRepuestos = 0;
 		
-		Map<Repuesto, Integer> hMap = new TreeMap<>(getRepuestosAveria());
-		Iterator<Entry<Repuesto, Integer>> iterator = hMap.entrySet().iterator();
+		Map<Repuesto<K>, Integer> hMap = new TreeMap<>(getRepuestosAveria());
+		Iterator<Entry<Repuesto<K>, Integer>> iterator = hMap.entrySet().iterator();
 		
 		while (iterator.hasNext()) {
-			Map.Entry<Repuesto, Integer> entry = (Entry<Repuesto, Integer>) iterator.next();
+			Map.Entry<Repuesto<K>, Integer> entry = (Entry<Repuesto<K>, Integer>) iterator.next();
 			presuRepuestos += entry.getKey().getPrecio() * entry.getValue();	
 		}
 		
@@ -147,11 +151,6 @@ public class Averia<T> implements Averiable<Repuesto> {
 		return PRECIO_HORA * getHorasEstimadas();
 	}
 
-	@Override
-	public double calcularPresuTotal() {
-		
-		return (calcularPresuRepuestos() + calcularPresuHoras()) ;
-	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -160,12 +159,13 @@ public class Averia<T> implements Averiable<Repuesto> {
 	public String toString() {
 		return "Averia (" + getIdAveria() + "), Descripcion averia: " + getNombreAveria()
 				+ ", FechaAveria(" + getFechaAveria() + "), Vehiculo: " + getVehiculo().toString()
-				+ ", HorasEstimadas = " + getHorasEstimadas() + "\nInforme Repuestos:" + informeRepuestos()
-				+ "\nTotal de Repuestos = " + calcularPresuRepuestos() + " €.\nTotal de Mano Obra = "
-				+ calcularPresuHoras() + " €.\nTOTAL PRESUPUESTO = " + calcularPresuTotal() + " €.";
+				+ ", HorasEstimadas = " + getHorasEstimadas() + "\nInforme Repuestos:" + informeRepuestos();
 	}
 	
-	
+	public String facturaAveria (String tipoIva) {
+		return toString() + "\nTotal de Repuestos = " + calcularPresuRepuestos() + " €.\nTotal de Mano Obra = "
+				+ calcularPresuHoras() + " €.\nTOTAL PRESUPUESTO = " + calcularPresuTotal(tipoIva) + " €."; 
+	}
 	
 		
 }

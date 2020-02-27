@@ -1,4 +1,4 @@
-package es.mdef.taller;
+package es.mdef.averia;
 
 public class Identificador {
 	

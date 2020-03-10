@@ -23,6 +23,6 @@ public interface PiezaRepuesto<T> {//extends Comparable<PiezaRepuesto<T>>{
 	 */
 	String toString();
 
-	//int compareTo(PiezaRepuesto<T> o);
+	int compareTo(PiezaRepuesto<T> o);
 
 }

@@ -1,5 +1,6 @@
 package es.mdef.almacen;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -10,7 +11,7 @@ public class Almacen<T> implements Almacenable<T> {
 	private Map<T, Integer> stock;
 		
 	public Almacen () {
-		stock = new TreeMap<>();
+		stock = new HashMap<>();
 	}
 	
 	/**
@@ -57,7 +58,7 @@ public class Almacen<T> implements Almacenable<T> {
 	public String toString() {
 		String inventario = "";
 		
-		Map<T, Integer> hMap = new TreeMap<>(getStock());
+		Map<T, Integer> hMap = new HashMap<>(getStock());
 		Iterator<Entry<T, Integer>> iterator = hMap.entrySet().iterator();
 		
 		while (iterator.hasNext()) {

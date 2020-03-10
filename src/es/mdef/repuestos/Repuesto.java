@@ -68,11 +68,11 @@ public class Repuesto<T> implements Coste, Nivelable, PiezaRepuesto<T> {
 	 * @see es.mdef.taller.PiezaRepuesto#compareTo(es.mdef.taller.Repuesto)
 	 * Comparable por la referencia del repuesto
 	 */
-//	@Override
-//	public int compareTo(PiezaRepuesto<T> o) {
-//		
-//		return ((PiezaRepuesto<T>) getReferencia()).compareTo((PiezaRepuesto<T>) o.getReferencia());
-//	}
+	@Override
+	public int compareTo(PiezaRepuesto<T> o) {
+		
+		return this.compareTo(o);
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
